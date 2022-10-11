@@ -43,8 +43,36 @@ class Sandbox(MQTTModule):
         # TESTING SENSING AN APRIL TAG MESSAGE FROM MQTT
         self.topic_map = {"avr/apriltags/visible": self.show_april_tag_detected}
 
-    #TESTING MAKING LED LIGHT UP WHEN APRIL TAG DETECTED
+    #I THINK THIS SHOULD OPEN SERVO, BLINK 3 TIMES, CLOSE SERVO
     def show_april_tag_detected(self, payload: AvrApriltagsVisiblePayload) -> None:
+        self.send_message(
+            "avr/pcm/set_servo_open_close",
+            {"servo": 0, "action": "open"},
+        )
+        self.send_message(
+            "avr/pcm/set_temp_color",
+            {"wrgb": (255, 255, 0, 0), "time": 0.5}
+        )
+        self.send_message(
+            "avr/pcm/set_temp_color",
+            {"wrgb": (0, 0, 0, 0), "time": 0.5}
+        )
+        self.send_message(
+            "avr/pcm/set_temp_color",
+            {"wrgb": (255, 255, 0, 0), "time": 0.5}
+        )
+        self.send_message(
+            "avr/pcm/set_temp_color",
+            {"wrgb": (0, 0, 0, 0), "time": 0.5}
+        )
+        self.send_message(
+            "avr/pcm/set_temp_color",
+            {"wrgb": (255, 255, 0, 0), "time": 0.5}
+        )
+        self.send_message(
+            "avr/pcm/set_temp_color",
+            {"wrgb": (0, 0, 0, 0), "time": 0.5}
+        )
         self.send_message(
             "avr/pcm/set_servo_open_close",
             {"servo": 0, "action": "open"},
