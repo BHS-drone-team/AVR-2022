@@ -2,8 +2,14 @@
 # code related to connecting to the MQTT server and sending/receiving messages.
 # It also helps us make sure that our code is sending the proper payload on a topic
 # and is receiving the proper payload as well.
+from typing_extensions import Self
 from bell.avr.mqtt.client import MQTTModule
-from bell.avr.mqtt.payloads import AvrFcmVelocityPayload
+from bell.avr.mqtt.payloads import (
+    AvrFcmVelocityPayload,
+    AvrPcmSetBaseColorPayload,
+    AvrApriltagsVisiblePayload,
+    AvrPcmSetTempColorPayload,
+)
 
 # This imports the third-party Loguru library which helps make logging way easier
 # and more useful.
@@ -34,6 +40,15 @@ class Sandbox(MQTTModule):
         # whenever a message arrives on that topic.
         self.topic_map = {"avr/fcm/velocity": self.show_velocity}
 
+        # TESTING SENSING AN APRIL TAG MESSAGE FROM MQTT
+        self.topic_map = {"avr/apriltags/visible": self.show_april_tag_detected}
+
+    #TESTING MAKING LED LIGHT UP WHEN APRIL TAG DETECTED
+    def show_april_tag_detected(self, payload: AvrApriltagsVisiblePayload) -> None:
+        self.send_message(
+            "avr/pcm/set_servo_open_close",
+            {"servo": 0, "action": "open"},
+        )
     # Here's an example of a custom message handler here.
     # This is what executes whenever a message is received on the "avr/fcm/velocity"
     # topic. The content of the message is passed to the `payload` argument.
@@ -51,6 +66,8 @@ class Sandbox(MQTTModule):
         # variables into a string without needing to combine lots of strings together.
         # https://realpython.com/python-f-strings/#f-strings-a-new-and-improved-way-to-format-strings-in-python
         logger.debug(f"Velocity information: {v_ms} m/s")
+
+
 
     # Here is an example on how to publish a message to an MQTT topic to
     # perform an action
