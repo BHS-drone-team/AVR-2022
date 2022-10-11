@@ -75,7 +75,7 @@ class Sandbox(MQTTModule):
         )
         self.send_message(
             "avr/pcm/set_servo_open_close",
-            {"servo": 0, "action": "open"},
+            {"servo": 0, "action": "close"},
         )
     # Here's an example of a custom message handler here.
     # This is what executes whenever a message is received on the "avr/fcm/velocity"
