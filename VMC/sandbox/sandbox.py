@@ -15,6 +15,7 @@ from bell.avr.mqtt.payloads import (
 # and more useful.
 # https://loguru.readthedocs.io/en/stable/
 from loguru import logger
+import time
 
 
 # This creates a new class that will contain multiple functions
@@ -44,35 +45,26 @@ class Sandbox(MQTTModule):
         self.topic_map = {"avr/apriltags/visible": self.show_april_tag_detected}
 
     #I THINK THIS SHOULD OPEN SERVO, BLINK 3 TIMES, CLOSE SERVO
+    april_count = False
     def show_april_tag_detected(self, payload: AvrApriltagsVisiblePayload) -> None:
+        april_count = True
+        #return april_count
+
+    if april_count == True:
+        #time.de
         self.send_message(
             "avr/pcm/set_servo_open_close",
             {"servo": 0, "action": "open"},
         )
-        self.send_message(
-            "avr/pcm/set_temp_color",
-            {"wrgb": (255, 255, 0, 0), "time": 0.5}
-        )
-        self.send_message(
-            "avr/pcm/set_temp_color",
-            {"wrgb": (0, 0, 0, 0), "time": 0.5}
-        )
-        self.send_message(
-            "avr/pcm/set_temp_color",
-            {"wrgb": (255, 255, 0, 0), "time": 0.5}
-        )
-        self.send_message(
-            "avr/pcm/set_temp_color",
-            {"wrgb": (0, 0, 0, 0), "time": 0.5}
-        )
-        self.send_message(
-            "avr/pcm/set_temp_color",
-            {"wrgb": (255, 255, 0, 0), "time": 0.5}
-        )
-        self.send_message(
-            "avr/pcm/set_temp_color",
-            {"wrgb": (0, 0, 0, 0), "time": 0.5}
-        )
+        for _ in range(3):
+            self.send_message(
+                "avr/pcm/set_temp_color",
+                {"wrgb": (255, 255, 0, 0), "time": 0.5}
+            )
+            self.send_message(
+                "avr/pcm/set_temp_color",
+                {"wrgb": (0, 0, 0, 0), "time": 0.5}
+            )
         self.send_message(
             "avr/pcm/set_servo_open_close",
             {"servo": 0, "action": "close"},
