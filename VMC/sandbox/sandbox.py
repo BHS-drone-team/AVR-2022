@@ -2,7 +2,6 @@
 # code related to connecting to the MQTT server and sending/receiving messages.
 # It also helps us make sure that our code is sending the proper payload on a topic
 # and is receiving the proper payload as well.
-#from typing_extensions import Self
 from bell.avr.mqtt.client import MQTTModule
 from bell.avr.mqtt.payloads import (
     AvrFcmVelocityPayload,
