@@ -48,27 +48,24 @@ class Sandbox(MQTTModule):
     april_count = False
     def show_april_tag_detected(self, payload: AvrApriltagsVisiblePayload) -> None:
         april_count = True
-        #return april_count
-
-    if april_count == True:
-        #time.de
-        self.send_message(
-            "avr/pcm/set_servo_open_close",
-            {"servo": 0, "action": "open"},
-        )
-        for _ in range(3):
+        if april_count == True:
             self.send_message(
-                "avr/pcm/set_temp_color",
-                {"wrgb": (255, 255, 0, 0), "time": 0.5}
+                "avr/pcm/set_servo_open_close",
+                {"servo": 0, "action": "open"},
             )
+            for _ in range(3):
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (255, 255, 0, 0), "time": 0.5}
+                )
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (0, 0, 0, 0), "time": 0.5}
+                )
             self.send_message(
-                "avr/pcm/set_temp_color",
-                {"wrgb": (0, 0, 0, 0), "time": 0.5}
+                "avr/pcm/set_servo_open_close",
+                {"servo": 0, "action": "close"},
             )
-        self.send_message(
-            "avr/pcm/set_servo_open_close",
-            {"servo": 0, "action": "close"},
-        )
     # Here's an example of a custom message handler here.
     # This is what executes whenever a message is received on the "avr/fcm/velocity"
     # topic. The content of the message is passed to the `payload` argument.
