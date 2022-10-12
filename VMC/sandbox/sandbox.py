@@ -14,6 +14,7 @@ from bell.avr.mqtt.payloads import (
     AvrAutonomousBuildingDropPayload,
     AvrApriltagsSelectedPayload,
 )
+import time
 
 # This imports the third-party Loguru library which helps make logging way easier
 # and more useful.
@@ -58,34 +59,42 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
                 )
+                time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": (255, 255, 0, 0), "time": 0.5}
                 )
+                time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": (0, 0, 0, 0), "time": 0.5}
                 )
+                time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": (255, 255, 0, 0), "time": 0.5}
                 )
+                time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": (0, 0, 0, 0), "time": 0.5}
                 )
+                time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": (255, 255, 0, 0), "time": 0.5}
                 )
+                time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": (0, 0, 0, 0), "time": 0.5}
                 )
+                time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "close"},
                 )
+                time.sleep(1)
     #I THINK THIS SHOULD OPEN SERVO, BLINK 3 TIMES, CLOSE SERVO
     #    april_count = False
     #def show_april_tag_detected(self, payload: AvrApriltagsVisiblePayload) -> None:
