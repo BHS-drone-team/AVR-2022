@@ -58,15 +58,30 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
                 )
-                for _ in range(3):
-                    self.send_message(
-                        "avr/pcm/set_temp_color",
-                        {"wrgb": (255, 255, 0, 0), "time": 0.5}
-                    )
-                    self.send_message(
-                        "avr/pcm/set_temp_color",
-                        {"wrgb": (0, 0, 0, 0), "time": 0.5}
-                    )
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (255, 255, 0, 0), "time": 0.5}
+                )
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (0, 0, 0, 0), "time": 0.5}
+                )
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (255, 255, 0, 0), "time": 0.5}
+                )
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (0, 0, 0, 0), "time": 0.5}
+                )
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (255, 255, 0, 0), "time": 0.5}
+                )
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (0, 0, 0, 0), "time": 0.5}
+                )
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "close"},
