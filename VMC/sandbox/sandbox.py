@@ -9,6 +9,8 @@ from bell.avr.mqtt.payloads import (
     AvrPcmSetBaseColorPayload,
     AvrApriltagsVisiblePayload,
     AvrPcmSetTempColorPayload,
+    AvrApriltagsRawTagsPos,
+    #int,
 )
 
 # This imports the third-party Loguru library which helps make logging way easier
@@ -43,9 +45,13 @@ class Sandbox(MQTTModule):
 
         # TESTING SENSING AN APRIL TAG MESSAGE FROM MQTT
         self.topic_map = {"avr/apriltags/visible": self.show_april_tag_detected}
+        #self.topic_map = {"avr/apriltags/raw": self.on_apriltag_message}
+
+    #def on_apriltag_message(self, payload: int) -> None:
+
 
     #I THINK THIS SHOULD OPEN SERVO, BLINK 3 TIMES, CLOSE SERVO
-    april_count = False
+        april_count = False
     def show_april_tag_detected(self, payload: AvrApriltagsVisiblePayload) -> None:
         april_count = True
         if april_count == True:
