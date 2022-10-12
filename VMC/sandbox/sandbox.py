@@ -53,7 +53,7 @@ class Sandbox(MQTTModule):
     def on_auton_message(self, payload: AvrAutonomousBuildingDropPayload) -> None:
         building_id = payload["id"]
         auton_enable = payload["enabled"]
-        if building_id == 0:
+        if building_id == 0 and auton_enable == True:
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
