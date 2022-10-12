@@ -54,7 +54,7 @@ class Sandbox(MQTTModule):
         auton_enable = payload["enabled"]
         def show_april_tag_detected(self, payload: AvrApriltagsSelectedPayload) -> None:
             april_id = payload["tag_id"]
-            if auton_enable == True and april_id == 0:
+            if april_id == 0:
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
