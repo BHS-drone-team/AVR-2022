@@ -13,6 +13,7 @@ from bell.avr.mqtt.payloads import (
     AvrApriltagsRawPayload,
     AvrAutonomousBuildingDropPayload,
     AvrApriltagsSelectedPayload,
+    AvrApriltagsRawTags,
 )
 import time
 
@@ -48,14 +49,15 @@ class Sandbox(MQTTModule):
         #self.topic_map = {"avr/fcm/velocity": self.show_velocity}
 
         # TESTING SENSING AN APRIL TAG MESSAGE FROM MQTT
-        self.topic_map = {"avr/autonomous/building/drop": self.on_auton_message}
+        #self.topic_map = {"avr/autonomous/building/drop": self.on_auton_message}
         #self.topic_map = {"avr/apriltags/selected": self.send_message}
+        self.topic_map = {"avr/apriltags/selected": self.on_apriltag_message}
 
 
-    def on_auton_message(self, payload: AvrAutonomousBuildingDropPayload) -> None:
-        building_id = payload["id"]
-        auton_enable = payload["enabled"]
-        if building_id == 0 and auton_enable == True:
+    def on_apriltag_message(self, payload: AvrApriltagsSelectedPayload) -> None:
+        building_tag_id = payload["tag_id"]
+        #auton_enable = payload["enabled"]
+        if building_tag_id == 0:
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
@@ -68,27 +70,12 @@ class Sandbox(MQTTModule):
                 time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
-                    {"wrgb": (0, 0, 0, 0), "time": 0.5}
-                )
-                time.sleep(1)
-                self.send_message(
-                    "avr/pcm/set_temp_color",
                     {"wrgb": (255, 255, 0, 0), "time": 0.5}
                 )
                 time.sleep(1)
                 self.send_message(
                     "avr/pcm/set_temp_color",
-                    {"wrgb": (0, 0, 0, 0), "time": 0.5}
-                )
-                time.sleep(1)
-                self.send_message(
-                    "avr/pcm/set_temp_color",
                     {"wrgb": (255, 255, 0, 0), "time": 0.5}
-                )
-                time.sleep(1)
-                self.send_message(
-                    "avr/pcm/set_temp_color",
-                    {"wrgb": (0, 0, 0, 0), "time": 0.5}
                 )
                 time.sleep(1)
                 self.send_message(
@@ -96,28 +83,6 @@ class Sandbox(MQTTModule):
                     {"servo": 0, "action": "close"},
                 )
                 time.sleep(1)
-    #I THINK THIS SHOULD OPEN SERVO, BLINK 3 TIMES, CLOSE SERVO
-    #    april_count = False
-    #def show_april_tag_detected(self, payload: AvrApriltagsVisiblePayload) -> None:
-    #    april_count = True
-    #    if april_count == True:
-    #        self.send_message(
-    #            "avr/pcm/set_servo_open_close",
-    #            {"servo": 0, "action": "open"},
-    #        )
-    #        for _ in range(3):
-    #            self.send_message(
-    #                "avr/pcm/set_temp_color",
-    #                {"wrgb": (255, 255, 0, 0), "time": 0.5}
-    #            )
-    #            self.send_message(
-    #                "avr/pcm/set_temp_color",
-    #                {"wrgb": (0, 0, 0, 0), "time": 0.5}
-    #            )
-    #        self.send_message(
-    #            "avr/pcm/set_servo_open_close",
-    #            {"servo": 0, "action": "close"},
-    #        )
     # Here's an example of a custom message handler here.
     # This is what executes whenever a message is received on the "avr/fcm/velocity"
     # topic. The content of the message is passed to the `payload` argument.
