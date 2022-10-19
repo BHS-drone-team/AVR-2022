@@ -55,10 +55,10 @@ class Sandbox(MQTTModule):
 
     def on_apriltag_message(self, payload: AvrApriltagsSelectedPayload) -> None:
         building_tag_id = payload["tag_id"]
-        penis=True
         #auton_enable = payload["enabled"]
-        while penis:
-            if building_tag_id == 0:
+        while building_tag_id == 0:
+            building_0 = True
+            while building_0:
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
@@ -83,7 +83,7 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "close"},
                 )
-                penis = False
+                building_0 = False
     # Here's an example of a custom message handler here.
     # This is what executes whenever a message is received on the "avr/fcm/velocity"
     # topic. The content of the message is passed to the `payload` argument.
