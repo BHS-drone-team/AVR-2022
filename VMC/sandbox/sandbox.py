@@ -57,7 +57,7 @@ class Sandbox(MQTTModule):
         building_tag_id = payload["tag_id"]
         penis=False
         #auton_enable = payload["enabled"]
-        if building_tag_id == 0 and penis=False:
+        if building_tag_id == 0 and penis==False:
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
