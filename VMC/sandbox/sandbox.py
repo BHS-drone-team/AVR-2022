@@ -67,21 +67,20 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_temp_color",
                     {"wrgb": (255, 255, 0, 0), "time": 0.5}
                 )
-                time.sleep(1)
+                self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": (255, 255, 0, 0), "time": 0.5}
+                )
                 self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": (255, 255, 0, 0), "time": 0.5}
                 )
                 time.sleep(1)
-                self.send_message(
-                    "avr/pcm/set_temp_color",
-                    {"wrgb": (255, 255, 0, 0), "time": 0.5}
-                )
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "close"},
                 )
-                penis=penis+1
+                penis += 1
     # Here's an example of a custom message handler here.
     # This is what executes whenever a message is received on the "avr/fcm/velocity"
     # topic. The content of the message is passed to the `payload` argument.
