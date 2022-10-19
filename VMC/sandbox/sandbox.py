@@ -61,7 +61,7 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
                 )
-                time.sleep(1)
+                time.sleep(10)
 #                self.send_message(
 #                    "avr/pcm/set_temp_color",
 #                    {"wrgb": (255, 255, 0, 0), "time": 0.5}
