@@ -28,6 +28,7 @@ import time
 # which are known as "methods". This inherits from the MQTTModule class
 # that we imported from our custom MQTT library.
 class Sandbox(MQTTModule):
+    prev_tag_id = -1
     # The "__init__" method of any class is special in Python. It's what runs when
     # you create a class like `sandbox = Sandbox()`. In here, we usually put
     # first-time initialization and setup code. The "self" argument is a magic
@@ -56,9 +57,10 @@ class Sandbox(MQTTModule):
     def on_april_message(self, payload: AvrApriltagsVisiblePayload) -> None:
         tag_list=payload["tags"]
         building_tag_id = tag_list[0]["id"]
+        prev_tag_id = building_tag_id
         print(building_tag_id)
         #auton_enable = payload["enabled"]
-        if building_tag_id == 0:
+        if building_tag_id != prev_tag_id and building_tag_id == 0:
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"},
@@ -85,6 +87,7 @@ class Sandbox(MQTTModule):
                     {"servo": 0, "action": "close"},
                 )
                 time.sleep(1)
+        prev_tag_id = building_tag_id
     # Here's an example of a custom message handler here.
     # This is what executes whenever a message is received on the "avr/fcm/velocity"
     # topic. The content of the message is passed to the `payload` argument.
