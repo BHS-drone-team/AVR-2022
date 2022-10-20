@@ -76,6 +76,13 @@ class Sandbox(MQTTModule):
         def close_servo(self) -> None:
             payload = AvrPcmSetServoOpenClosePayload(servo=0, action="close")
             self.send_message("avr/pcm/set_servo_open_close", payload)
+
+
+
+
+
+
+
         #def go_for_auton(self, payload: AvrApriltagsVisiblePayload) -> None:
             #tag_list=payload["tags"]
            # building_tag_id = tag_list[0]["id"]
