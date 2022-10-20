@@ -50,11 +50,13 @@ class Sandbox(MQTTModule):
         # TESTING SENSING AN APRIL TAG MESSAGE FROM MQTT
         #self.topic_map = {"avr/autonomous/building/drop": self.on_auton_message}
         #self.topic_map = {"avr/apriltags/selected": self.send_message}
-        self.topic_map = {"avr/apriltags/selected": self.on_apriltag_message}
+        self.topic_map = {"avr/apriltags/visible": self.on_message}
 
 
-    def on_apriltag_message(self, payload: AvrApriltagsSelectedPayload) -> None:
-        building_tag_id = payload["tag_id"]
+    def on_message(self, payload: AvrApriltagsVisiblePayload) -> None:
+        tags = [AvrApriltagsVisibleTags]
+        building_tag_id = tags[0]
+        print(building_tag_id)
         #auton_enable = payload["enabled"]
         if building_tag_id == 0:
                 self.send_message(
