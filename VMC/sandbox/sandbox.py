@@ -54,7 +54,7 @@ class Sandbox(MQTTModule):
 
 
     def on_message(self, payload: AvrApriltagsVisiblePayload) -> None:
-        tag_list = [AvrApriltagsVisibleTags]
+        tag_list=payload["tags"]
         building_tag_id = tag_list[0]
         print(building_tag_id)
         #auton_enable = payload["enabled"]
