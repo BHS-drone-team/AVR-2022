@@ -58,14 +58,16 @@ class Sandbox(MQTTModule):
         auton_enabled_flag=payload["enabled"]
         if auton_enabled_flag == True:
             return True
+        else:
+            return False
     def on_april_message(self, payload: AvrApriltagsVisiblePayload):
         tag_list=payload["tags"]
         building_tag_id = tag_list[0]["id"]
         if building_tag_id == 0:
             return True
-    result_auton=on_auton_message
-    result_april=on_april_message
-    if result_auton==True and result_april==True:
+        else:
+            return False
+    if on_auton_message==True and on_april_message==True:
         def open_servo(self) -> None:
             payload = AvrPcmSetServoOpenClosePayload(servo=0, action="open")
             self.send_message("avr/pcm/set_servo_open_close", payload)
