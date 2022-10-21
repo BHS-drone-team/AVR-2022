@@ -50,11 +50,11 @@ class Sandbox(MQTTModule):
         #self.topic_map = {"avr/fcm/velocity": self.show_velocity}
 
         # TESTING SENSING AN APRIL TAG MESSAGE FROM MQTT
-        self.topic_map = {"avr/autonomous/building/drop": self.on_auton_message}
+        #self.topic_map = {"avr/autonomous/building/drop": self.on_auton_message}
         #self.topic_map = {"avr/apriltags/selected": self.send_message}
-        self.topic_map = {"avr/apriltags/visible": self.on_april_message}
+        #self.topic_map = {"avr/apriltags/visible": self.on_april_message}
 
-    def on_auton_message(self, payload: AvrAutonomousBuildingDropPayload):
+    """def on_auton_message(self, payload: AvrAutonomousBuildingDropPayload):
         auton_enabled_flag=payload["enabled"]
         if auton_enabled_flag == True:
             return True
@@ -152,7 +152,7 @@ class Sandbox(MQTTModule):
         #self.send_message(
         #    "avr/pcm/set_servo_open_close",
         #    {"servo": 0, "action": "open"},
-        #)
+        #)"""
 
 
 if __name__ == "__main__":
