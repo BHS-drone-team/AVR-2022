@@ -67,7 +67,10 @@ class Sandbox(MQTTModule):
             return True
         else:
             return False
-    if on_auton_message==True and on_april_message==True:
+
+    already_ran_0=False
+
+    if on_auton_message==True and on_april_message==True and already_ran_0==False:
         def open_servo(self) -> None:
             payload = AvrPcmSetServoOpenClosePayload(servo=0, action="open")
             self.send_message("avr/pcm/set_servo_open_close", payload)
@@ -79,6 +82,7 @@ class Sandbox(MQTTModule):
         def close_servo(self) -> None:
             payload = AvrPcmSetServoOpenClosePayload(servo=0, action="close")
             self.send_message("avr/pcm/set_servo_open_close", payload)
+        already_ran_0=True
 
 
 
