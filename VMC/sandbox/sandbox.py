@@ -73,6 +73,7 @@ class Sandbox(MQTTModule):
         def flash_led(self) -> None:
             payload = AvrPcmSetTempColorPayload(wrgb=(255, 255, 0, 0), time=0.5)
             self.send_message("avr/pcm/set_temp_color", payload)
+        time.sleep(1)
         def close_servo(self) -> None:
             payload = AvrPcmSetServoOpenClosePayload(servo=0, action="close")
             self.send_message("avr/pcm/set_servo_open_close", payload)
