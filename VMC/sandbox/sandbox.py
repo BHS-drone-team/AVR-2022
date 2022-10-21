@@ -2,33 +2,68 @@
 # code related to connecting to the MQTT server and sending/receiving messages.
 # It also helps us make sure that our code is sending the proper payload on a topic
 # and is receiving the proper payload as well.
-#from typing_extensions import Self
-from pickle import TRUE
 from bell.avr.mqtt.client import MQTTModule
-from bell.avr.mqtt.payloads import (
-    AvrFcmVelocityPayload,
-    AvrPcmSetBaseColorPayload,
-    AvrApriltagsVisiblePayload,
-    AvrPcmSetTempColorPayload,
-    AvrApriltagsVisibleTags,
-    AvrApriltagsRawPayload,
-    AvrAutonomousBuildingDropPayload,
-    AvrApriltagsSelectedPayload,
-    AvrApriltagsRawTags,
-    AvrPcmSetServoOpenClosePayload,
-)
-from bell.avr.utils import timing
-from loguru import logger
-import time
+from bell.avr.mqtt.payloads import AvrFcmVelocityPayload
 
+# This imports the third-party Loguru library which helps make logging way easier
+# and more useful.
+# https://loguru.readthedocs.io/en/stable/
+from loguru import logger
+
+
+# This creates a new class that will contain multiple functions
+# which are known as "methods". This inherits from the MQTTModule class
+# that we imported from our custom MQTT library.
 class Sandbox(MQTTModule):
+    # The "__init__" method of any class is special in Python. It's what runs when
+    # you create a class like `sandbox = Sandbox()`. In here, we usually put
+    # first-time initialization and setup code. The "self" argument is a magic
+    # argument that must be the first argument in any class method. This allows the code
+    # inside the method to access class information.
     def __init__(self) -> None:
+        # This calls the original `__init__()` method of the MQTTModule class.
+        # This runs some setup code that we still want to occur, even though
+        # we're replacing the `__init__()` method.
         super().__init__()
-        
-        self.topic_map = {"avr/autonomous/enable": self.printMessage}
-    
-    def printMessage(self) -> None:
-        logger.debug("Message: Enabled")
+        # Here, we're creating a dictionary of MQTT topic names to method handles.
+        # A dictionary is a data structure that allows use to
+        # obtain values based on keys. Think of a dictionary of state names as keys
+        # and their capitals as values. By using the state name as a key, you can easily
+        # find the associated capital. However, this does not work in reverse. So here,
+        # we're creating a dictionary of MQTT topics, and the methods we want to run
+        # whenever a message arrives on that topic.
+        self.topic_map = {"avr/fcm/velocity": self.show_velocity}
+
+    # Here's an example of a custom message handler here.
+    # This is what executes whenever a message is received on the "avr/fcm/velocity"
+    # topic. The content of the message is passed to the `payload` argument.
+    # The `AvrFcmVelocityMessage` class here is beyond the scope of AVR.
+    def show_velocity(self, payload: AvrFcmVelocityPayload) -> None:
+        vx = payload["vX"]
+        vy = payload["vY"]
+        vz = payload["vZ"]
+        v_ms = (vx, vy, vz)
+
+        # Use methods like `debug`, `info`, `success`, `warning`, `error`, and
+        # `critical` to log data that you can see while your code runs.
+
+        # This is what is known as a "f-string". This allows you to easily inject
+        # variables into a string without needing to combine lots of strings together.
+        # https://realpython.com/python-f-strings/#f-strings-a-new-and-improved-way-to-format-strings-in-python
+        logger.debug(f"Velocity information: {v_ms} m/s")
+
+    # Here is an example on how to publish a message to an MQTT topic to
+    # perform an action
+    def open_servo(self) -> None:
+        # It's super easy, use the `self.send_message` method with the first argument
+        # as the topic, and the second argument as the payload.
+        # Pro-tip, if you set `python.analysis.typeCheckingMode` to `basic` in you
+        # VS Code preferences, you'll get a red underline if your payload doesn't
+        # match the expected format for the topic.
+        self.send_message(
+            "avr/pcm/set_servo_open_close",
+            {"servo": 0, "action": "open"},
+        )
 
 
 if __name__ == "__main__":
