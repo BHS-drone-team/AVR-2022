@@ -30,7 +30,7 @@ import time
 # which are known as "methods". This inherits from the MQTTModule class
 # that we imported from our custom MQTT library.
 class Sandbox(MQTTModule):
-    """    # The "__init__" method of any class is special in Python. It's what runs when
+     # The "__init__" method of any class is special in Python. It's what runs when
     # you create a class like `sandbox = Sandbox()`. In here, we usually put
     # first-time initialization and setup code. The "self" argument is a magic
     # argument that must be the first argument in any class method. This allows the code
@@ -154,7 +154,7 @@ class Sandbox(MQTTModule):
         #    {"servo": 0, "action": "open"},
         #)
 
-    """
+
 if __name__ == "__main__":
     # This is what actually initializes the Sandbox class, and executes it.
     # This is nested under the above condition, as otherwise, if this file
