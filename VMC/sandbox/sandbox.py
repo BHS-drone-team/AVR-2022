@@ -2,78 +2,75 @@
 # code related to connecting to the MQTT server and sending/receiving messages.
 # It also helps us make sure that our code is sending the proper payload on a topic
 # and is receiving the proper payload as well.
+#from typing_extensions import Self
+from ast import Not
 from bell.avr.mqtt.client import MQTTModule
-from bell.avr.mqtt.payloads import AvrFcmVelocityPayload
-
-# This imports the third-party Loguru library which helps make logging way easier
-# and more useful.
-# https://loguru.readthedocs.io/en/stable/
+from bell.avr.mqtt.payloads import (
+    AvrApriltagsVisiblePayload,
+)
+from bell.avr.utils import timing
 from loguru import logger
+import time
 
-
-# This creates a new class that will contain multiple functions
-# which are known as "methods". This inherits from the MQTTModule class
-# that we imported from our custom MQTT library.
 class Sandbox(MQTTModule):
-    # The "__init__" method of any class is special in Python. It's what runs when
-    # you create a class like `sandbox = Sandbox()`. In here, we usually put
-    # first-time initialization and setup code. The "self" argument is a magic
-    # argument that must be the first argument in any class method. This allows the code
-    # inside the method to access class information.
-    def __init__(self) -> None:
-        # This calls the original `__init__()` method of the MQTTModule class.
-        # This runs some setup code that we still want to occur, even though
-        # we're replacing the `__init__()` method.
+    HORIZ_DROP_TOLERANCE = 20 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+
+    visible_tag = None # Most currently seen april tag
+    has_dropped = False # Flag to only send drop command once per auto enable
+    # NOTE needs logic to handle multiple drops per auto
+
+    def __init__(self):
         super().__init__()
-        # Here, we're creating a dictionary of MQTT topic names to method handles.
-        # A dictionary is a data structure that allows use to
-        # obtain values based on keys. Think of a dictionary of state names as keys
-        # and their capitals as values. By using the state name as a key, you can easily
-        # find the associated capital. However, this does not work in reverse. So here,
-        # we're creating a dictionary of MQTT topics, and the methods we want to run
-        # whenever a message arrives on that topic.
-        self.topic_map = {"avr/fcm/velocity": self.show_velocity}
 
-    # Here's an example of a custom message handler here.
-    # This is what executes whenever a message is received on the "avr/fcm/velocity"
-    # topic. The content of the message is passed to the `payload` argument.
-    # The `AvrFcmVelocityMessage` class here is beyond the scope of AVR.
-    def show_velocity(self, payload: AvrFcmVelocityPayload) -> None:
-        vx = payload["vX"]
-        vy = payload["vY"]
-        vz = payload["vZ"]
-        v_ms = (vx, vy, vz)
+        self.topic_map = {"avr/autonomous/enable" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
+        self.topic_map = {"avr/autonomous/disable" : self.on_autonomous_disable} # On auto disable in GUI, run autonomous_disable method
+        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
 
-        # Use methods like `debug`, `info`, `success`, `warning`, `error`, and
-        # `critical` to log data that you can see while your code runs.
+    # Run autonomous when enabled
+    def on_autonomous_enable(self):
+        # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
+        if self.visible_tag != None & self.is_within_tolerance & (not self.has_dropped):
+            self.open_servo(self, 0) # Open servo on channel 0
+            self.blink_leds(self, 3, (255, 255, 0, 0), 0.5) # Blink LEDs 3 times at 0.5 second interval
+            has_dropped = True
 
-        # This is what is known as a "f-string". This allows you to easily inject
-        # variables into a string without needing to combine lots of strings together.
-        # https://realpython.com/python-f-strings/#f-strings-a-new-and-improved-way-to-format-strings-in-python
-        logger.debug(f"Velocity information: {v_ms} m/s")
+    # Run when autonomous is disabled
+    def on_autonomous_disable(self):
+        has_dropped = False # Reset the has_dropped flag for next auto run
 
-    # Here is an example on how to publish a message to an MQTT topic to
-    # perform an action
-    def open_servo(self) -> None:
-        # It's super easy, use the `self.send_message` method with the first argument
-        # as the topic, and the second argument as the payload.
-        # Pro-tip, if you set `python.analysis.typeCheckingMode` to `basic` in you
-        # VS Code preferences, you'll get a red underline if your payload doesn't
-        # match the expected format for the topic.
+    # Update class variable visible_tag to the most currently seen tag and log the horizontal distance between the vehicle and april tag
+    def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
+        self.visible_tag = payload[0] # NOTE if no visible tags are seen, what is payload[0]? If it is None, update visible_tag to None
+        horiz_dist = payload["horizontal_dist"]
+        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
+
+    # Return whether the vehicle is within the desired horizontal tolerance of the april tag
+    def is_within_tolerance(self, payload: AvrApriltagsVisiblePayload):
+        tag_horiz_dist = self.visible_tag["horizontal_dist"] # Horizontal scalar distance from vehicle to tag in cm
+        return tag_horiz_dist < self.HORIZ_DROP_TOLERANCE
+
+    # Open servo on desired channel
+    def open_servo(self, channel):
         self.send_message(
-            "avr/pcm/set_servo_open_close",
-            {"servo": 0, "action": "open"},
-        )
+                    "avr/pcm/set_servo_open_close",
+                    {"servo": channel, "action": "open"}
+            )
 
+    # Close servo on desired channel
+    def close_servo(self, channel):
+        self.send_message(
+                    "avr/pcm/set_servo_open_close",
+                    {"servo": channel, "action": "close"}
+            )
+
+    # Blink led for desired iterations with desired wrbg value for specified time interval
+    def blink_leds(self, iterations, wrgb, time):
+        for _ in iterations:
+             self.send_message(
+                        "avr/pcm/set_temp_color",
+                        {"wrgb": wrgb, "time": time}
+                )
 
 if __name__ == "__main__":
-    # This is what actually initializes the Sandbox class, and executes it.
-    # This is nested under the above condition, as otherwise, if this file
-    # were imported by another file, these lines would execute, as the interpreter
-    # reads and executes the file top-down. However, whenever a file is called directly
-    # with `python file.py`, the magic `__name__` variable is set to "__main__".
-    # Thus, this code will only execute if the file is called directly.
     box = Sandbox()
-    # The `run` method is defined by the inherited `MQTTModule` class and is a
-    # convience function to start processing incoming MQTT messages infinitely.
     box.run()
