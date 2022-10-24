@@ -1,4 +1,3 @@
-from typing_extensions import Self
 from bell.avr.mqtt.client import MQTTModule
 from bell.avr.mqtt.payloads import (
     AvrApriltagsVisiblePayload,
