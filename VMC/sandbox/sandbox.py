@@ -9,14 +9,14 @@ import time
 
 class Sandbox(MQTTModule):
     HORIZ_DROP_TOLERANCE = 20.0 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
-    global visible_tag
-    visible_tag = None # Most currently seen april tag
+#    global visible_tag
+#    visible_tag = None # Most currently seen april tag
     global has_dropped
     has_dropped = False # Flag to only send drop command once per auto enable
-    global is_within_tolerance_variable
-    is_within_tolerance_variable = False
-    global auton_enable_final
-    auton_enable_final = False
+#    global is_within_tolerance_variable
+#    is_within_tolerance_variable = False
+#    global auton_enable_final
+#    auton_enable_final = False
     # NOTE needs logic to handle multiple drops per auto
     def __init__(self):
         super().__init__()
