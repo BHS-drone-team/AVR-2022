@@ -27,6 +27,8 @@ class Sandbox(MQTTModule):
         run_auton = payload["enabled"]
         if run_auton == True:
             self.has_dropped(False)
+        visible_tag_result = self.visible_tag
+        logger.debug(f"visible tag: {visible_tag_result}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0 and self.is_within_tolerance and self.has_dropped == False:
             self.open_servo(0) # Open servo on channel 0
@@ -47,7 +49,6 @@ class Sandbox(MQTTModule):
     # Update class variable visible_tag to the most currently seen tag and log the horizontal distance between the vehicle and april tag
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
         tag_list=payload["tags"] #this is to get the list out of the payload
-#        self.visible_tag = payload[0] # NOTE if no visible tags are seen, what is payload[0]? If it is None, update visible_tag to None
         horiz_dist = tag_list[0]["horizontal_dist"] #pulls the horiz_dist from the tag list
         april_tag_id = tag_list[0]["id"]
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
