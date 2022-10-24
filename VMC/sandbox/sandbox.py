@@ -53,10 +53,11 @@ class Sandbox(MQTTModule):
         tag_list=payload["tags"] #this is to get the list out of the payload
         april_id = tag_list[0]["id"]
         tag_horiz_dist = tag_list[0]["horizontal_dist"] # Horizontal scalar distance from vehicle to tag in cm
-        if april_id == 0 and tag_horiz_dist > self.HORIZ_DROP_TOLERANCE:
+        if april_id == 0:
             global visible_tag
             visible_tag = 0
             logger.debug(f"visible_tag: {visible_tag}")
+        if tag_horiz_dist > self.HORIZ_DROP_TOLERANCE:
             global is_within_tolerance_variable
             is_within_tolerance_variable = True
             logger.debug(f"is_within_tolerance_variable: {is_within_tolerance_variable}")
