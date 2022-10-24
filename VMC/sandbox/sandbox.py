@@ -38,7 +38,7 @@ class Sandbox(MQTTModule):
             has_dropped == True
 
     # Run autonomous when enabled
-    def on_autonomous_enable(self, payload: AvrAutonomousBuildingDropPayload):
+    def on_autonomous_enable(self, payload: AvrAutonomousBuildingDropPayload) -> None:
         auton_enable = payload["enabled"]
         logger.debug(f"auton_enable: {auton_enable}")
         if auton_enable == True:
