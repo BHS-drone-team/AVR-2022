@@ -8,6 +8,7 @@ from bell.avr.mqtt.client import MQTTModule
 from bell.avr.mqtt.payloads import (
     AvrApriltagsVisiblePayload,
     AvrAutonomousEnablePayload,
+    AvrAutonomousBuildingDropPayload,
 )
 from bell.avr.utils import timing
 from loguru import logger
@@ -20,7 +21,7 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/autonomous/enable" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
+        self.topic_map = {"avr/autonomous/building/drop" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
 #        self.topic_map = {"avr/autonomous/disable" : self.on_autonomous_disable} # On auto disable in GUI, run autonomous_disable method
         self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
         self.visible_tag = None
@@ -28,7 +29,7 @@ class Sandbox(MQTTModule):
         self.HORIZ_DROP_TOLERANCE = 20 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 
     # Run autonomous when enabled
-    def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload) -> None:
+    def on_autonomous_enable(self, payload: AvrAutonomousBuildingDropPayload) -> None:
         recieved_auton_enable = payload["enabled"]
         logger.debug(f"recieved auton enable: {recieved_auton_enable}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
