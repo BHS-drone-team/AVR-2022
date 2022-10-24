@@ -29,9 +29,10 @@ class Sandbox(MQTTModule):
     # Run autonomous when enabled
     def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload):
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
-        if self.visible_tag != None and self.is_within_tolerance and (not self.has_dropped):
+        if visible_tag != None and self.is_within_tolerance and has_dropped == False:
             self.open_servo(0) # Open servo on channel 0
             self.blink_leds(3, (255, 255, 0, 0), 0.5) # Blink LEDs 3 times at 0.5 second interval
+            global has_dropped
             has_dropped = True
 
     # Run when autonomous is disabled
