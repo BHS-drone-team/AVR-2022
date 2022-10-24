@@ -28,6 +28,7 @@ class Sandbox(MQTTModule):
 
         if visible_tag == 0 and is_within_tolerance_variable and has_dropped == False and auton_enable_final:
             self.go_for_auton(True)
+            logger.debug(f"has_dropped: {has_dropped}")
 
     def go_for_auton(self, good_to_go) -> None:
         if good_to_go == True:
@@ -42,6 +43,7 @@ class Sandbox(MQTTModule):
         if auton_enable == True:
             global auton_enable_final
             auton_enable_final = True
+            logger.debug(f"auton_enable_final: {auton_enable_final}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
 
 
@@ -55,8 +57,10 @@ class Sandbox(MQTTModule):
         if april_id == 0 and tag_horiz_dist > self.HORIZ_DROP_TOLERANCE:
             global visible_tag
             visible_tag = 0
+            logger.debug(f"visible_tag: {visible_tag}")
             global is_within_tolerance_variable
             is_within_tolerance_variable = True
+            logger.debug(f"is_within_tolerance_variable: {is_within_tolerance_variable}")
 
 
 
