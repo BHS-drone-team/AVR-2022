@@ -24,9 +24,9 @@ class Sandbox(MQTTModule):
         self.topic_map = {"avr/autonomous/building/drop" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
 #        self.topic_map = {"avr/autonomous/disable" : self.on_autonomous_disable} # On auto disable in GUI, run autonomous_disable method
         self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
-        self.visible_tag = None
-        self.has_dropped = False
-        self.HORIZ_DROP_TOLERANCE = 20 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+#        self.visible_tag = None
+#        self.has_dropped = False
+#        self.HORIZ_DROP_TOLERANCE = 20 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 
     # Run autonomous when enabled
     def on_autonomous_enable(self, payload: AvrAutonomousBuildingDropPayload) -> None:
