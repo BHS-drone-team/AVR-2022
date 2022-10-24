@@ -27,7 +27,7 @@ class Sandbox(MQTTModule):
         run_auton = payload["enabled"]
         if run_auton == True:
             self.has_dropped(False)
-        visible_tag_result = self.visible_tag
+        visible_tag_result = self.visible_tag(0)
         logger.debug(f"visible tag: {visible_tag_result}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0 and self.is_within_tolerance and self.has_dropped == False:
