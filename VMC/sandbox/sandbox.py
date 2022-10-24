@@ -44,7 +44,8 @@ class Sandbox(MQTTModule):
 #        self.visible_tag = payload[0] # NOTE if no visible tags are seen, what is payload[0]? If it is None, update visible_tag to None
         horiz_dist = tag_list[0]["horizontal_dist"] #pulls the horiz_dist from the tag list
         april_tag_id = tag_list[0]["id"]
-        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
+        logger.debug(f"april id: {april_tag_id}")
+#        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if april_tag_id == 0:
             return 0
     # Return whether the vehicle is within the desired horizontal tolerance of the april tag
