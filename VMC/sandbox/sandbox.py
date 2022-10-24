@@ -58,7 +58,7 @@ class Sandbox(MQTTModule):
             global visible_tag
             visible_tag = 0
             logger.debug(f"visible_tag: {visible_tag}")
-        if tag_horiz_dist > self.HORIZ_DROP_TOLERANCE:
+        if tag_horiz_dist < self.HORIZ_DROP_TOLERANCE:
             global is_within_tolerance_variable
             is_within_tolerance_variable = True
             logger.debug(f"is_within_tolerance_variable: {is_within_tolerance_variable}")
