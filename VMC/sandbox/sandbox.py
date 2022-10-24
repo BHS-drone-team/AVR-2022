@@ -30,7 +30,6 @@ class Sandbox(MQTTModule):
     def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload):
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag != None and self.is_within_tolerance and (not self.has_dropped):
-            servo_0 = 0
             self.open_servo(0) # Open servo on channel 0
             self.blink_leds(3, (255, 255, 0, 0), 0.5) # Blink LEDs 3 times at 0.5 second interval
             has_dropped = True
@@ -44,8 +43,10 @@ class Sandbox(MQTTModule):
         tag_list=payload["tags"] #this is to get the list out of the payload
 #        self.visible_tag = payload[0] # NOTE if no visible tags are seen, what is payload[0]? If it is None, update visible_tag to None
         horiz_dist = tag_list[0]["horizontal_dist"] #pulls the horiz_dist from the tag list
+        april_tag_id = tag_list[0]["id"]
         logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
-
+        if april_tag_id == 0:
+            return 0
     # Return whether the vehicle is within the desired horizontal tolerance of the april tag
     def is_within_tolerance(self, payload: AvrApriltagsVisiblePayload):
         tag_list=payload["tags"]
