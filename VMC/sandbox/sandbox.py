@@ -2,6 +2,7 @@ from bell.avr.mqtt.client import MQTTModule
 from bell.avr.mqtt.payloads import (
     AvrApriltagsVisiblePayload,
     AvrAutonomousEnablePayload,
+    AvrAutonomousBuildingDropPayload,
 )
 from bell.avr.utils import timing
 from loguru import logger
@@ -21,7 +22,7 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/autonomous/enable" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
+        self.topic_map = {"avr/autonomous/building/drop" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
 #NOTE this doesn't work because it doesn't send enable disable here        self.topic_map = {"avr/autonomous/disable" : self.on_autonomous_disable} # On auto disable in GUI, run autonomous_disable method
         self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
 
@@ -37,7 +38,7 @@ class Sandbox(MQTTModule):
             has_dropped == True
 
     # Run autonomous when enabled
-    def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload):
+    def on_autonomous_enable(self, payload: AvrAutonomousBuildingDropPayload):
         auton_enable = payload["enabled"]
         logger.debug(f"auton_enable: {auton_enable}")
         if auton_enable == True:
