@@ -43,13 +43,13 @@ class Sandbox(MQTTModule):
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
         tag_list=payload["tags"] #this is to get the list out of the payload
 #        self.visible_tag = payload[0] # NOTE if no visible tags are seen, what is payload[0]? If it is None, update visible_tag to None
-        horiz_dist = tag_list[1] #pulls the horiz_dist from the tag list
+        horiz_dist = tag_list[0]["horizontal_dist"] #pulls the horiz_dist from the tag list
         logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
 
     # Return whether the vehicle is within the desired horizontal tolerance of the april tag
     def is_within_tolerance(self, payload: AvrApriltagsVisiblePayload):
         tag_list=payload["tags"]
-        tag_horiz_dist = tag_list[1] # Horizontal scalar distance from vehicle to tag in cm
+        tag_horiz_dist = tag_list[0]["horizontal_dist"] # Horizontal scalar distance from vehicle to tag in cm
 #        if tag_horiz_dist > self.HORIZ_DROP_TOLERANCE:
 #            return True #i did this because it didn't like the variable defining
 
