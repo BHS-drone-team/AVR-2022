@@ -44,7 +44,8 @@ class Sandbox(MQTTModule):
             global is_within_tolerance_variable
             is_within_tolerance_variable = True
             logger.debug(f"is_within_tolerance_variable: {is_within_tolerance_variable}")
-
+    logger.debug(f"is_within_tolerance_variable outside: {is_within_tolerance_variable}")
+    logger.debug(f"visible tag outside: {visible_tag}")
     if visible_tag == 0 and is_within_tolerance_variable:
         code_recieved = True
         logger.debug(f"code_recieved: {code_recieved}")
