@@ -50,7 +50,7 @@ class Sandbox(MQTTModule):
     def is_within_tolerance(self, payload: AvrApriltagsVisiblePayload):
         tag_list=payload["tags"]
         tag_horiz_dist = tag_list[0]["horizontal_dist"] # Horizontal scalar distance from vehicle to tag in cm
-        if tag_horiz_dist > self.HORIZ_DROP_TOLERANCE:
+        if tag_horiz_dist < self.HORIZ_DROP_TOLERANCE:
             return True #i did this because it didn't like the variable defining
 
     # Open servo on desired channel
