@@ -36,6 +36,7 @@ class Sandbox(MQTTModule):
 
     # Run when autonomous is disabled
     def on_autonomous_disable(self):
+        global has_dropped
         has_dropped = False # Reset the has_dropped flag for next auto run
 
     # Update class variable visible_tag to the most currently seen tag and log the horizontal distance between the vehicle and april tag
@@ -44,10 +45,10 @@ class Sandbox(MQTTModule):
 #        self.visible_tag = payload[0] # NOTE if no visible tags are seen, what is payload[0]? If it is None, update visible_tag to None
         horiz_dist = tag_list[0]["horizontal_dist"] #pulls the horiz_dist from the tag list
         april_tag_id = tag_list[0]["id"]
-        logger.debug(f"april id: {april_tag_id}")
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if april_tag_id == 0:
-            return 0
+            global visible_tag
+            visible_tag = 0
     # Return whether the vehicle is within the desired horizontal tolerance of the april tag
     def is_within_tolerance(self, payload: AvrApriltagsVisiblePayload):
         tag_list=payload["tags"]
