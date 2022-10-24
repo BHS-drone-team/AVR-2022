@@ -39,6 +39,7 @@ class Sandbox(MQTTModule):
     # Run autonomous when enabled
     def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload):
         auton_enable = payload["enabled"]
+        logger.debug(f"auton_enable: {auton_enable}")
         if auton_enable == True:
             global auton_enable_final
             auton_enable_final = True
