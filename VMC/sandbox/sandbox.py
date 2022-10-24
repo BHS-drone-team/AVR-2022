@@ -9,10 +9,10 @@ import time
 
 class Sandbox(MQTTModule):
     HORIZ_DROP_TOLERANCE = 20.0 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
-    visible_tag = None # Most currently seen april tag
     has_dropped = False # Flag to only send drop command once per auto enable
-    is_within_tolerance_variable = False
     auton_enable_final = False
+    visible_tag = None
+    is_within_tolerance_variable = False
     # NOTE needs logic to handle multiple drops per auto
     def __init__(self):
         super().__init__()
@@ -36,23 +36,17 @@ class Sandbox(MQTTModule):
         tag_list=payload["tags"] #this is to get the list out of the payload
         april_id = tag_list[0]["id"]
         tag_horiz_dist = tag_list[0]["horizontal_dist"] # Horizontal scalar distance from vehicle to tag in cm
-        if april_id == 0:
+        if april_id == 0 and tag_horiz_dist < self.HORIZ_DROP_TOLERANCE:
             global visible_tag
             visible_tag = 0
-            logger.debug(f"visible_tag: {visible_tag}")
-        if tag_horiz_dist < self.HORIZ_DROP_TOLERANCE:
             global is_within_tolerance_variable
             is_within_tolerance_variable = True
-            logger.debug(f"is_within_tolerance_variable: {is_within_tolerance_variable}")
-    penis=True
-    while penis:
-        logger.debug(f"is_within_tolerance_variable outside: {is_within_tolerance_variable}")
-        logger.debug(f"visible tag outside: {visible_tag}")
-        time.sleep(1)
-    if visible_tag == 0 and is_within_tolerance_variable:
-        code_recieved = True
-        logger.debug(f"code_recieved: {code_recieved}")
-        def open_servo(self):
+
+    def 
+        if visible_tag == 0 and is_within_tolerance_variable:
+            code_recieved = True
+            logger.debug(f"code_recieved: {code_recieved}")
+            def open_servo(self):
                 self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": 0, "action": "open"}
