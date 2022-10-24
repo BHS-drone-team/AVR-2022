@@ -28,7 +28,7 @@ class Sandbox(MQTTModule):
         if run_auton == True:
             self.has_dropped(False)
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
-        if self.visible_tag != None and self.is_within_tolerance and self.has_dropped == False:
+        if self.visible_tag == 0 and self.is_within_tolerance and self.has_dropped == False:
             self.open_servo(0) # Open servo on channel 0
             self.blink_leds(3, (255, 255, 0, 0), 0.5) # Blink LEDs 3 times at 0.5 second interval
             has_dropped = True
