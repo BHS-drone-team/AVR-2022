@@ -21,11 +21,11 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/autonomous/enable" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
+#        self.topic_map = {"avr/autonomous/enable" : self.on_autonomous_enable} # On auto enable in GUI, run autonomous
 #NOTE this doesn't work because it doesn't send enable disable here        self.topic_map = {"avr/autonomous/disable" : self.on_autonomous_disable} # On auto disable in GUI, run autonomous_disable method
         self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
 
-        if visible_tag == 0 and is_within_tolerance_variable and has_dropped == False and auton_enable_final:
+        if visible_tag == 0 and is_within_tolerance_variable and has_dropped == False:
             self.go_for_auton(True)
             logger.debug(f"has_dropped: {has_dropped}")
 
@@ -37,13 +37,13 @@ class Sandbox(MQTTModule):
             has_dropped == True
 
     # Run autonomous when enabled
-    def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload) -> None:
-        auton_enable = payload["enabled"]
-        logger.debug(f"auton_enable: {auton_enable}")
-        if auton_enable == True:
-            global auton_enable_final
-            auton_enable_final = True
-            logger.debug(f"auton_enable_final: {auton_enable_final}")
+#    def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload) -> None:
+#        auton_enable = payload["enabled"]
+#        logger.debug(f"auton_enable: {auton_enable}")
+#        if auton_enable == True:
+#            global auton_enable_final
+#            auton_enable_final = True
+#            logger.debug(f"auton_enable_final: {auton_enable_final}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
 
 
