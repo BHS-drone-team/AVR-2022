@@ -33,7 +33,8 @@ class Sandbox(MQTTModule):
 
     # Run autonomous when enabled
     def on_autonomous_enable(self, payload: AvrPcmSetServoOpenClosePayload):
-        recieved_auton_enable = payload["servo"]
+        recieved_auton_enable = payload["action"]
+        logger.debug(f"visible tag: {self.visible_tag}")
         logger.debug(f"recieved auton enable: {recieved_auton_enable}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0 and self.has_dropped == False:
