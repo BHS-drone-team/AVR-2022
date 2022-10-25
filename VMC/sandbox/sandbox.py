@@ -13,7 +13,6 @@ from bell.avr.mqtt.payloads import (
     AvrFcmVelocityPayload,
     AvrPcmSetServoOpenClosePayload
 )
-from bell.avr.utils import timing
 from loguru import logger
 import time
 
@@ -39,10 +38,6 @@ class Sandbox(MQTTModule):
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0:
             self.open_servo(0) # Open servo on channel 0
-            time.sleep(1)
-            self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
-            time.sleep(1)
-            self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
             time.sleep(1)
             self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
             time.sleep(1)
@@ -76,10 +71,12 @@ class Sandbox(MQTTModule):
     # Blink led for desired iterations with desired wrbg value for specified time interval
     def blink_leds(self, time):
         wrgb = (255,255,0,0)
-        self.send_message(
+        for _ in range(3):
+            self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
+            time.sleep(1)
 
 if __name__ == "__main__":
     box = Sandbox()
