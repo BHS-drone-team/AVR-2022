@@ -38,9 +38,11 @@ class Sandbox(MQTTModule):
         logger.debug(f"recieved auton enable: {did_message_recieve}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0 and self.has_dropped == False:
-#            self.open_servo(0) # Open servo on channel 0
-            self.blink_leds(3, (255, 255, 0, 0), 0.5) # Blink LEDs 3 times at 0.5 second interval
-#            self.close_servo(0)
+            self.open_servo(0) # Open servo on channel 0
+            time.sleep(1)
+            self.blink_leds((255, 255, 0, 0), 0.5) # Blink LEDs 3 times at 0.5 second interval
+            time.sleep(1)
+            self.close_servo(0)
             self.has_dropped = True
             logger.debug(f"self.has_dropped: {self.has_dropped}")
 
@@ -69,13 +71,22 @@ class Sandbox(MQTTModule):
             )
 
     # Blink led for desired iterations with desired wrbg value for specified time interval
-    def blink_leds(self, iterations, wrgb, time):
-        for _ in iterations:
-            self.send_message(
+    def blink_leds(self, wrgb, time):
+        self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
-            time.sleep(1)
+        time.sleep(1)
+        self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": wrgb, "time": time}
+            )
+        time.sleep(1)
+        self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": wrgb, "time": time}
+            )
+        time.sleep(1)
 
 if __name__ == "__main__":
     box = Sandbox()
