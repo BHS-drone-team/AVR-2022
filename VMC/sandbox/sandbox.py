@@ -76,7 +76,6 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
-            time.sleep(1)
 
 if __name__ == "__main__":
     box = Sandbox()
