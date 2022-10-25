@@ -40,7 +40,7 @@ class Sandbox(MQTTModule):
         if self.visible_tag == 0 and self.has_dropped == False:
             self.open_servo(0) # Open servo on channel 0
             time.sleep(1)
-            self.blink_leds((255, 255, 0, 0), 0.5) # Blink LEDs 3 times at 0.5 second interval
+            self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
             time.sleep(1)
             self.close_servo(0)
             self.has_dropped = True
@@ -71,7 +71,8 @@ class Sandbox(MQTTModule):
             )
 
     # Blink led for desired iterations with desired wrbg value for specified time interval
-    def blink_leds(self, wrgb, time):
+    def blink_leds(self, time):
+        wrgb = (255,255,0,0)
         self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
