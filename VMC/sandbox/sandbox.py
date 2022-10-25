@@ -37,7 +37,7 @@ class Sandbox(MQTTModule):
         logger.debug(f"visible tag: {self.visible_tag}")
         logger.debug(f"recieved auton enable: {did_message_recieve}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
-        if self.visible_tag == 0 and self.has_dropped == False:
+        if self.visible_tag == 0:
             self.open_servo(0) # Open servo on channel 0
             time.sleep(1)
             self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
