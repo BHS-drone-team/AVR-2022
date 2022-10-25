@@ -38,11 +38,15 @@ class Sandbox(MQTTModule):
         logger.debug(f"recieved auton enable: {did_message_recieve}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0 and self.has_dropped == False:
-            self.open_servo(0) # Open servo on channel 0
+            self.change_servo(0, open) # Open servo on channel 0
             time.sleep(1)
             self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
             time.sleep(1)
-            self.close_servo(0)
+            self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
+            time.sleep(1)
+            self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
+            time.sleep(1)
+            self.change_servo(0, open)
             self.has_dropped = True
             logger.debug(f"self.has_dropped: {self.has_dropped}")
 
@@ -52,24 +56,16 @@ class Sandbox(MQTTModule):
         tag_list=payload["tags"] #this is to get the list out of the payload
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
-        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
+#        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 0:
             self.visible_tag = 0
 
     # Open servo on desired channel
-    def open_servo(self, channel):
+    def change_servo(self, channel, open_close):
         self.send_message(
                     "avr/pcm/set_servo_open_close",
-                    {"servo": channel, "action": "open"}
+                    {"servo": channel, "action": open_close}
             )
-
-    # Close servo on desired channel
-    def close_servo(self, channel):
-        self.send_message(
-                    "avr/pcm/set_servo_open_close",
-                    {"servo": channel, "action": "close"}
-            )
-
     # Blink led for desired iterations with desired wrbg value for specified time interval
     def blink_leds(self, time):
         wrgb = (255,255,0,0)
@@ -77,17 +73,6 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
-        time.sleep(1)
-        self.send_message(
-                    "avr/pcm/set_temp_color",
-                    {"wrgb": wrgb, "time": time}
-            )
-        time.sleep(1)
-        self.send_message(
-                    "avr/pcm/set_temp_color",
-                    {"wrgb": wrgb, "time": time}
-            )
-        time.sleep(1)
 
 if __name__ == "__main__":
     box = Sandbox()
