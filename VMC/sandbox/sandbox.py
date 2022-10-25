@@ -25,17 +25,17 @@ class Sandbox(MQTTModule):
         super().__init__()
 
 #        self.topic_map = {"avr/autonomous/enable": self.on_autonomous_enable}
-        self.topic_map = {"avr/fcm/velocity": self.on_autonomous_enable}
+        self.topic_map = {"avr/apriltags/visible": self.on_autonomous_enable}
         self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
         self.visible_tag = None
         self.has_dropped = False
         self.HORIZ_DROP_TOLERANCE = 20 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 
     # Run autonomous when enabled
-    def on_autonomous_enable(self, payload: AvrFcmVelocityPayload):
-        recieved_auton_enable = payload["vX"]
+    def on_autonomous_enable(self, payload: AvrApriltagsVisiblePayload):
+        tag_list = payload["tags"]
         logger.debug(f"visible tag: {self.visible_tag}")
-        logger.debug(f"recieved auton enable: {recieved_auton_enable}")
+        logger.debug(f"recieved auton enable: {tag_list}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0 and self.has_dropped == False:
 #            self.open_servo(0) # Open servo on channel 0
