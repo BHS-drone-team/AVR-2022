@@ -14,7 +14,6 @@ from bell.avr.mqtt.payloads import (
     AvrPcmSetServoOpenClosePayload
 )
 from loguru import logger
-import time
 
 class Sandbox(MQTTModule):
 
@@ -38,9 +37,7 @@ class Sandbox(MQTTModule):
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0:
             self.open_servo(0) # Open servo on channel 0
-            time.sleep(10)
             self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
-            time.sleep(10)
             self.close_servo(0)
             self.has_dropped = True
             logger.debug(f"self.has_dropped: {self.has_dropped}")
