@@ -41,9 +41,11 @@ class Sandbox(MQTTModule):
         finish_3 = start + 6
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0:
+            timing_message_1 = True
             self.open_servo(0) # Open servo on channel 0
             while time.time () < finish_1:
                 pass
+            logger.debug(f"timing_message_1: {timing_message_1}")
             self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             while time.time () < finish_2:
                 pass
