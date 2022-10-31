@@ -37,15 +37,20 @@ class Sandbox(MQTTModule):
         logger.debug(f"recieved auton enable: {did_message_recieve}")
         start = time.time ()
         finish_1 = start + 4
-        finish_2 = start + 8
+        finish_2 = start + 5
+        finish_3 = start + 6
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         if self.visible_tag == 0:
             self.open_servo(0) # Open servo on channel 0
             while time.time () < finish_1:
                 pass
-            self.blink_leds(0.5) # Blink LEDs 3 times at 0.5 second interval
+            self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             while time.time () < finish_2:
                 pass
+            self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+            while time.time () < finish_3:
+                pass
+            self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             self.close_servo(0)
             self.has_dropped = True
             logger.debug(f"self.has_dropped: {self.has_dropped}")
@@ -76,28 +81,10 @@ class Sandbox(MQTTModule):
     # Blink led for desired iterations with desired wrbg value for specified time interval
     def blink_leds(self, time):
         wrgb = (255,255,0,0)
-        start = time.time ()
-        finish = start + 1
-        finish_2 = start + 2
-        finish_3 = start + 3
         self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
-        while time.time () < finish:
-            pass
-        self.send_message(
-                    "avr/pcm/set_temp_color",
-                    {"wrgb": wrgb, "time": time}
-            )
-        while time.time () < finish_2:
-            pass
-        self.send_message(
-                    "avr/pcm/set_temp_color",
-                    {"wrgb": wrgb, "time": time}
-            )
-        while time.time () < finish_3:
-            pass
 
 if __name__ == "__main__":
     box = Sandbox()
