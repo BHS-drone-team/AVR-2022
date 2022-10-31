@@ -69,10 +69,12 @@ class Sandbox(MQTTModule):
 
     # Open servo on desired channel
     def open_servo(self, channel):
+        message_sent = True
         self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": channel, "action": "open"}
             )
+        logger.debug(f"message_sent: {message_sent}")
 
     def close_servo(self, channel):
         self.send_message(
