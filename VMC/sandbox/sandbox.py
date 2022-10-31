@@ -78,15 +78,26 @@ class Sandbox(MQTTModule):
         wrgb = (255,255,0,0)
         start = time.time ()
         finish = start + 1
-        for _ in range(3):
-            start = time.time ()
-            finish = start + 1
-            self.send_message(
+        finish_2 = start + 2
+        finish_3 = start + 3
+        self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
-            while time.time () < finish:
-                pass
+        while time.time () < finish:
+            pass
+        self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": wrgb, "time": time}
+            )
+        while time.time () < finish_2:
+            pass
+        self.send_message(
+                    "avr/pcm/set_temp_color",
+                    {"wrgb": wrgb, "time": time}
+            )
+        while time.time () < finish_3:
+            pass
 
 if __name__ == "__main__":
     box = Sandbox()
