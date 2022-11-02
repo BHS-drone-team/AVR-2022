@@ -174,7 +174,7 @@ class Sandbox(MQTTModule):
 
     # Blink led for desired iterations with desired wrbg value for specified time interval
     def blink_leds(self, time):
-        wrgb = (81,126,245,0)
+        wrgb = (0,51,255,0)
         self.send_message(
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
