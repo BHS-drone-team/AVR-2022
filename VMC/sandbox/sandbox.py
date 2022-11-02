@@ -18,7 +18,6 @@ import time
 
 class Sandbox(MQTTModule):
 
-    HORIZ_DROP_TOLERANCE = 20 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
     # NOTE needs logic to handle multiple drops per auto
     def __init__(self):
         super().__init__()
@@ -69,12 +68,10 @@ class Sandbox(MQTTModule):
 
     # Open servo on desired channel
     def open_servo(self, channel):
-        message_sent = True
         self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": channel, "action": "open"}
             )
-        logger.debug(f"message_sent: {message_sent}")
 
     def close_servo(self, channel):
         self.send_message(
