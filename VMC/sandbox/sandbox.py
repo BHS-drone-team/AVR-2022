@@ -40,6 +40,13 @@ class Sandbox(MQTTModule):
         while True:
                 loop_running = True
                 logger.debug(f"recieved auton enable: {loop_running}")
+                logger.debug(f"recieved auton enable: {self.has_dropped_4}")
+                logger.debug(f"recieved auton enable: {self.has_dropped_5}")
+                logger.debug(f"recieved auton enable: {self.visible_tag}")
+                start = time.time ()
+                finish_1 = start + 2
+                while time.time () < finish_1:
+                    pass
                 if self.visible_tag == 0 and self.has_dropped_0 == False:
                     start = time.time ()
                     finish_1 = start + 1
