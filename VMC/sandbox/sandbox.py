@@ -9,9 +9,6 @@ from bell.avr.mqtt.payloads import (
     AvrApriltagsVisiblePayload,
     AvrAutonomousEnablePayload,
     AvrAutonomousBuildingDropPayload,
-    AvrApriltagsFpsPayload,
-    AvrFcmVelocityPayload,
-    AvrPcmSetServoOpenClosePayload
 )
 from loguru import logger
 import time
@@ -22,7 +19,7 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/autonomous/enable": self.on_autonomous_enable, "avr/apriltags/visible" : self.update_visible_tag}
+        self.topic_map = {"avr/autonomous/enable": self.on_autonomous_enable, "avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.reset_switch}
 #        self.topic_map = {"avr/apriltags/visible": self.on_autonomous_enable}
 #        self.visible_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
         self.visible_tag = None
@@ -131,10 +128,21 @@ class Sandbox(MQTTModule):
             self.has_dropped_5 = True
             logger.debug(f"self.has_dropped: {self.has_dropped_5}")
 
+    def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
+        reset = payload["enabled"]
+        if reset == True:
+            self.has_dropped_0 = False
+            self.has_dropped_1 = False
+            self.has_dropped_2 = False
+            self.has_dropped_3 = False
+            self.has_dropped_4 = False
+            self.has_dropped_5 = False
+
+
 
     # Update class variable visible_tag to the most currently seen tag and log the horizontal distance between the vehicle and april tag
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
-        tag_list=payload["tags"] #this is to get the list out of the payload
+        tag_list = payload["tags"] #this is to get the list out of the payload
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
