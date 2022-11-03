@@ -44,10 +44,10 @@ class Sandbox(MQTTModule):
         logger.debug(f"has dropped 4: {self.has_dropped_4}")
         logger.debug(f"has dropped 5: {self.has_dropped_5}") #NOTE seems like loop is not seeing global variables?
         logger.debug(f"visible tag in loop: {self.visible_tag}")
-        start = time.time ()
-        finish_1 = start + 2
-        while time.time () < finish_1:
-            pass
+#        start = time.time ()
+#        finish_1 = start + 2
+#        while time.time () < finish_1:
+#            pass
         if self.visible_tag == 0 and self.has_dropped_0 == False:
             start = time.time ()
             finish_1 = start + 1
