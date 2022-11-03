@@ -37,6 +37,7 @@ class Sandbox(MQTTModule):
         did_message_recieve = payload["enabled"]
         logger.debug(f"visible tag: {self.visible_tag}")
         logger.debug(f"recieved auton enable: {did_message_recieve}")
+        logger.debug(f"visible tag out of loop: {self.visible_tag}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         while self.has_dropped_all == False:
             loop_running = True
@@ -172,6 +173,13 @@ class Sandbox(MQTTModule):
             self.visible_tag = 4
         if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 5:
             self.visible_tag = 5
+        else:
+            self.visible_tag = None
+
+#        if horiz_dist < self.HORIZ_DROP_TOLERANCE:
+#            self.visible_tag = tag_id
+#        else:
+#            self.visible_tag = None
 
     # Open servo on desired channel
     def open_servo(self, channel):
