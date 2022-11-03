@@ -159,6 +159,7 @@ class Sandbox(MQTTModule):
         tag_list = payload["tags"] #this is to get the list out of the payload
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
+        logger.debug(f"visible tag out of loop: {self.visible_tag}")
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 0:
             self.visible_tag = 0
@@ -172,9 +173,7 @@ class Sandbox(MQTTModule):
             self.visible_tag = 4
         if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 5:
             self.visible_tag = 5
-        else:
-            self.visible_tag = None
-        logger.debug(f"visible tag out of loop: {self.visible_tag}")
+
 
 #        if horiz_dist < self.HORIZ_DROP_TOLERANCE:
 #            self.visible_tag = tag_id
