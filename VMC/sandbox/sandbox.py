@@ -161,24 +161,11 @@ class Sandbox(MQTTModule):
         tag_id = tag_list[0]["id"]
         logger.debug(f"visible tag out in update_visible_tag: {tag_id}")
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
-        if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 0:
-            self.visible_tag = 0
-        if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 1:
-            self.visible_tag = 1
-        if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 2:
-            self.visible_tag = 2
-        if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 3:
-            self.visible_tag = 3
-        if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 4:
-            self.visible_tag = 4
-        if horiz_dist < self.HORIZ_DROP_TOLERANCE and tag_id == 5:
-            self.visible_tag = 5
+        if horiz_dist < self.HORIZ_DROP_TOLERANCE:
+            self.visible_tag = tag_id
 
 
-#        if horiz_dist < self.HORIZ_DROP_TOLERANCE:
-#            self.visible_tag = tag_id
-#        else:
-#            self.visible_tag = None
+
 
     # Open servo on desired channel
     def open_servo(self, channel):
