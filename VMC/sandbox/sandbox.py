@@ -29,7 +29,7 @@ class Sandbox(MQTTModule):
         self.has_dropped_3 = False
         self.has_dropped_4 = False
         self.has_dropped_5 = False
-#        self.has_dropped_all = False
+        self.has_dropped_all = False
         self.HORIZ_DROP_TOLERANCE = 20 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 
     # Run autonomous when enabled
@@ -38,7 +38,7 @@ class Sandbox(MQTTModule):
         logger.debug(f"visible tag: {self.visible_tag}")
         logger.debug(f"recieved auton enable: {did_message_recieve}")
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
-        while True:
+        while self.has_dropped_all == False:
             loop_running = True
             logger.debug(f"loop running: {loop_running}")
             logger.debug(f"has dropped 4: {self.has_dropped_4}")
@@ -139,7 +139,8 @@ class Sandbox(MQTTModule):
                 self.has_dropped_5 = True
                 logger.debug(f"self.has_dropped: {self.has_dropped_5}")
             if self.has_dropped_0 == True and self.has_dropped_1 == True and self.has_dropped_2 == True and self.has_dropped_3 == True and self.has_dropped_4 == True and self.has_dropped_5 == True:
-                break
+                logger.debug(f"ending loop")
+                self.has_dropped_all = True
 
     def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
         reset = payload["enabled"]
