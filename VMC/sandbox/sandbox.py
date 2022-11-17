@@ -30,7 +30,7 @@ class Sandbox(MQTTModule):
         self.has_dropped_4 = False
         self.has_dropped_5 = False
         self.has_dropped_all = False
-        self.HORIZ_DROP_TOLERANCE = 100000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+        self.HORIZ_DROP_TOLERANCE = 10000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 
     # Run autonomous when enabled
     def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload):
