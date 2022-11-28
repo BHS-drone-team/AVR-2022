@@ -19,7 +19,8 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.reset_switch}
+        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} 
+        #"avr/autonomous/building/drop" : self.reset_switch}
         self.has_dropped_0 = False
         self.has_dropped_1 = False
         self.has_dropped_2 = False
