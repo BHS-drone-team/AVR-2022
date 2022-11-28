@@ -14,7 +14,7 @@ from loguru import logger
 import time
 import threading
 
-class AprilSensor():
+class AprilSensor(MQTTModule):
     logger.debug("ran april sensor")
     def __init__(self):
         logger.debug("ran april sensor inside init")
