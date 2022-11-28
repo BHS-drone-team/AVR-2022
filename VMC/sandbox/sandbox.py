@@ -216,9 +216,11 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
-
+def main():
+    th = AprilSensor()
+    th.start()
+    logger.debug("running main()")
 if __name__ == "__main__":
-    x = AprilSensor()
-    x.start()
+    main()
     y = Thread(target = AprilSensor)
     y.run()
