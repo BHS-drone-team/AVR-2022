@@ -218,7 +218,7 @@ class Sandbox(MQTTModule):
             )
 
 if __name__ == "__main__":
-    x = Thread(target = Sandbox)
-    x.run()
+    box = Thread(target = Sandbox)
+    box.run()
     y = Thread(target = AprilSensor)
     y.run()
