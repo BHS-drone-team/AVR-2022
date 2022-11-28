@@ -37,6 +37,12 @@ class Sandbox(MQTTModule):
             finish_1 = start + 2
             while time.time () < finish_1:
                 pass
+            global has_dropped_0
+            global has_dropped_1
+            global has_dropped_2
+            global has_dropped_3
+            global has_dropped_4
+            global has_dropped_5
             if visible_tag == 0 and has_dropped_0 == False:
                 start = time.time ()
                 finish_1 = start + 1
@@ -50,7 +56,6 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.close_servo(0)
-                global has_dropped_0
                 has_dropped_0 = True
                 logger.debug(f"self.has_dropped: {has_dropped_0}")
             if visible_tag == 1 and has_dropped_1 == False:
@@ -66,7 +71,6 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.open_servo(1)
-                global has_dropped_1
                 has_dropped_1 = True
                 logger.debug(f"has_dropped: {has_dropped_1}")
             if visible_tag == 2 and has_dropped_2 == False:
@@ -82,7 +86,6 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.close_servo(0)
-                global has_dropped_2
                 has_dropped_2 = True
                 logger.debug(f"has_dropped: {has_dropped_2}")
             if visible_tag == 3 and has_dropped_3 == False:
@@ -98,7 +101,6 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.open_servo(1)
-                global has_dropped_3
                 has_dropped_3 = True
                 logger.debug(f"has_dropped: {has_dropped_3}")
             if visible_tag == 4 and has_dropped_4 == False:
@@ -114,7 +116,6 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.close_servo(0)
-                global has_dropped_4
                 has_dropped_4 = True
                 logger.debug(f"has_dropped: {has_dropped_4}")
             if visible_tag == 5 and has_dropped_5 == False:
@@ -130,7 +131,6 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.open_servo(1)
-                global has_dropped_5
                 has_dropped_5 = True
                 logger.debug(f"has_dropped: {has_dropped_5}")
             if has_dropped_0 == True and has_dropped_1 == True and has_dropped_2 == True and has_dropped_3 == True and has_dropped_4 == True and has_dropped_5 == True:
