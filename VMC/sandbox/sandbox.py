@@ -180,11 +180,11 @@ class Sandbox(MQTTModule):
         tag_list = payload["tags"] #this is to get the list out of the payload
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
-        logger.debug(f"visible tag out in update_visible_tag: {tag_id}")
-        global visible_tag
+        logger.debug(f"tag is being sensed: {tag_id}")
         HORIZ_DROP_TOLERANCE = 10000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if horiz_dist < HORIZ_DROP_TOLERANCE:
+            global visible_tag
             visible_tag = tag_id
 
 
