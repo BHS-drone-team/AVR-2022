@@ -12,16 +12,18 @@ from bell.avr.mqtt.payloads import (
 )
 from loguru import logger
 import time
-from threading import Thread
+import threading
 
-class AprilSensor(MQTTModule):
-
+class AprilSensor():
+    logger.debug("ran april sensor")
     def __init__(self):
+        logger.debug("ran april sensor inside init")
         super().__init__()
 
         self.topic_map = {"avr/apriltags/visible": self.update_visible_tag}
 
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
+        logger.debug("ran april sensor inside update visible tag")
         tag_list = payload["tags"] #this is to get the list out of the payload
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
@@ -219,7 +221,7 @@ class Sandbox(MQTTModule):
 
 def main():
     aprilsensor = AprilSensor()
-    x = Thread(target = AprilSensor)
+    x = threading.Thread(target = aprilsensor.update_visible_tag)
     x.start()
     logger.debug("should have run x.start()")
 
