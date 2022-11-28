@@ -14,7 +14,7 @@ from loguru import logger
 import time
 from threading import Thread
 
-class AprilSensor(Thread):
+class AprilSensor(MQTTModule):
 
     def __init__(self):
         super().__init__()
@@ -216,10 +216,12 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
+
 def main():
-    th = AprilSensor()
-    th.start()
-    logger.debug("running main()")
+    aprilsensor = AprilSensor()
+    x = Thread(target = AprilSensor)
+    x.start()
+
 if __name__ == "__main__":
     main()
     y = Thread(target = AprilSensor)
