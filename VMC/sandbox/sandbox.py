@@ -152,6 +152,7 @@ class Sandbox(MQTTModule):
             if has_dropped_0 == True and has_dropped_1 == True and has_dropped_2 == True and has_dropped_3 == True and has_dropped_4 == True and has_dropped_5 == True:
                 logger.debug("ending loop")
                 has_dropped_all = True
+                break
 
     def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
         reset = payload["enabled"]
