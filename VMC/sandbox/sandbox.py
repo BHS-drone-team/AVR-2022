@@ -43,6 +43,7 @@ class Sandbox(MQTTModule):
             global has_dropped_3
             global has_dropped_4
             global has_dropped_5
+            global has_dropped_all
             if visible_tag == 0 and has_dropped_0 == False:
                 start = time.time ()
                 finish_1 = start + 1
@@ -135,19 +136,18 @@ class Sandbox(MQTTModule):
                 logger.debug(f"has_dropped: {has_dropped_5}")
             if has_dropped_0 == True and has_dropped_1 == True and has_dropped_2 == True and has_dropped_3 == True and has_dropped_4 == True and has_dropped_5 == True:
                 logger.debug("ending loop")
-                global has_dropped_all
                 has_dropped_all = True
 
     def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
         reset = payload["enabled"]
         reset_button = payload["id"]
+        global has_dropped_0
+        global has_dropped_1
+        global has_dropped_2
+        global has_dropped_3
+        global has_dropped_4
+        global has_dropped_5
         if reset == True and reset_button == 0:
-            global has_dropped_0
-            global has_dropped_1
-            global has_dropped_2
-            global has_dropped_3
-            global has_dropped_4
-            global has_dropped_5
             has_dropped_0 = False
             has_dropped_1 = False
             has_dropped_2 = False
@@ -172,10 +172,10 @@ class Sandbox(MQTTModule):
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
         logger.debug(f"visible tag out in update_visible_tag: {tag_id}")
+        global visible_tag
         HORIZ_DROP_TOLERANCE = 10000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if horiz_dist < HORIZ_DROP_TOLERANCE:
-            global visible_tag
             visible_tag = tag_id
 
 
