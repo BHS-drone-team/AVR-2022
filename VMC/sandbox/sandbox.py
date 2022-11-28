@@ -12,6 +12,25 @@ from bell.avr.mqtt.payloads import (
 )
 from loguru import logger
 import time
+from threading import Thread
+
+class AprilSensor(MQTTModule):
+
+    def __init__(self):
+        super().__init__()
+
+        self.topic_map = {"avr/apriltags/visible": self.update_visible_tag}
+
+    def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
+        tag_list = payload["tags"] #this is to get the list out of the payload
+        horiz_dist = tag_list[0]["horizontal_dist"]
+        tag_id = tag_list[0]["id"]
+        logger.debug(f"tag is being sensed: {tag_id}")
+        HORIZ_DROP_TOLERANCE = 10000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+    #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
+        if horiz_dist < HORIZ_DROP_TOLERANCE:
+            global visible_tag
+            visible_tag = tag_id
 
 class Sandbox(MQTTModule):
 
@@ -19,7 +38,7 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/autonomous/enable": self.on_autonomous_enable, "avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.reset_switch}
+        self.topic_map = {"avr/autonomous/enable": self.on_autonomous_enable, "avr/autonomous/building/drop" : self.reset_switch}
 #        self.topic_map = {"avr/apriltags/visible": self.on_autonomous_enable}
 #        self.visible_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
         global has_dropped_0
@@ -44,12 +63,8 @@ class Sandbox(MQTTModule):
         logger.debug(f"visible tag: {visible_tag}")
         logger.debug(f"recieved auton enable: {did_message_recieve}")
         global has_dropped_all
-        if did_message_recieve == True:
-            run_the_loop = True
-        else:
-            run_the_loop = False
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
-        while run_the_loop:
+        while has_dropped_all == False:
             global has_dropped_0
             global has_dropped_1
             global has_dropped_2
@@ -179,19 +194,6 @@ class Sandbox(MQTTModule):
             self.close_servo(5)
 
 
-    # Update class variable visible_tag to the most currently seen tag and log the horizontal distance between the vehicle and april tag
-    def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
-        tag_list = payload["tags"] #this is to get the list out of the payload
-        horiz_dist = tag_list[0]["horizontal_dist"]
-        tag_id = tag_list[0]["id"]
-        logger.debug(f"tag is being sensed: {tag_id}")
-        HORIZ_DROP_TOLERANCE = 10000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
-#        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
-        if horiz_dist < HORIZ_DROP_TOLERANCE:
-            global visible_tag
-            visible_tag = tag_id
-
-
 
 
     # Open servo on desired channel
@@ -216,5 +218,5 @@ class Sandbox(MQTTModule):
             )
 
 if __name__ == "__main__":
-    box = Sandbox()
-    box.run()
+    Thread(target = Sandbox).start()
+    Thread(target = AprilSensor).start()
