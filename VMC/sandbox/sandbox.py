@@ -221,7 +221,7 @@ class Sandbox(MQTTModule):
 
 def main():
     aprilsensor = AprilSensor()
-    x = threading.Thread(target = aprilsensor.update_visible_tag)
+    x = threading.Thread(target = AprilSensor)
     x.start()
     logger.debug("should have run x.start()")
 
