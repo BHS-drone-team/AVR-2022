@@ -47,6 +47,7 @@ class Sandbox(MQTTModule):
         has_dropped_5 = False
         has_dropped_all = False
         if visible_tag == 0 and has_dropped_0 == False:
+            has_dropped_0 = True
             start = time.time ()
             finish_1 = start + 1
             finish_2 = start + 2
@@ -59,9 +60,9 @@ class Sandbox(MQTTModule):
                 pass
             self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             self.close_servo(0)
-            has_dropped_0 = True
             logger.debug(f"self.has_dropped: {has_dropped_0}")
         if visible_tag == 1 and has_dropped_1 == False:
+            has_dropped_1 = True
             start = time.time ()
             finish_1 = start + 1
             finish_2 = start + 2
@@ -74,9 +75,9 @@ class Sandbox(MQTTModule):
                 pass
             self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             self.open_servo(1)
-            has_dropped_1 = True
             logger.debug(f"has_dropped: {has_dropped_1}")
         if visible_tag == 2 and has_dropped_2 == False:
+            has_dropped_2 = True
             start = time.time ()
             finish_1 = start + 1
             finish_2 = start + 2
@@ -89,9 +90,10 @@ class Sandbox(MQTTModule):
                 pass
             self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             self.close_servo(0)
-            has_dropped_2 = True
+
             logger.debug(f"has_dropped: {has_dropped_2}")
         if visible_tag == 3 and has_dropped_3 == False:
+            has_dropped_3 = True
             start = time.time ()
             finish_1 = start + 1
             finish_2 = start + 2
@@ -104,9 +106,9 @@ class Sandbox(MQTTModule):
                 pass
             self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             self.open_servo(1)
-            has_dropped_3 = True
             logger.debug(f"has_dropped: {has_dropped_3}")
         if visible_tag == 4 and has_dropped_4 == False:
+            has_dropped_4 = True
             start = time.time ()
             finish_1 = start + 1
             finish_2 = start + 2
@@ -119,9 +121,10 @@ class Sandbox(MQTTModule):
                 pass
             self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             self.close_servo(0)
-            has_dropped_4 = True
+
             logger.debug(f"has_dropped: {has_dropped_4}")
         if visible_tag == 5 and has_dropped_5 == False:
+            has_dropped_5 = True
             start = time.time ()
             finish_1 = start + 1
             finish_2 = start + 2
@@ -134,7 +137,6 @@ class Sandbox(MQTTModule):
                 pass
             self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
             self.open_servo(1)
-            has_dropped_5 = True
             logger.debug(f"has_dropped: {has_dropped_5}")
 
     def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
