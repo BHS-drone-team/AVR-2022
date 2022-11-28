@@ -21,6 +21,7 @@ class AprilSensor(MQTTModule):
         super().__init__()
 
         self.topic_map = {"avr/apriltags/visible": self.update_visible_tag}
+        logger.debug(f"visible tag in loop: {self.topic_map}")
 
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
         logger.debug("ran april sensor inside update visible tag")
