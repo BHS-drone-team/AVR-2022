@@ -44,8 +44,12 @@ class Sandbox(MQTTModule):
         logger.debug(f"visible tag: {visible_tag}")
         logger.debug(f"recieved auton enable: {did_message_recieve}")
         global has_dropped_all
+        if did_message_recieve == True:
+            run_the_loop = True
+        else:
+            run_the_loop = False
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
-        while has_dropped_all == False:
+        while run_the_loop:
             global has_dropped_0
             global has_dropped_1
             global has_dropped_2
