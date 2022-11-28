@@ -30,6 +30,7 @@ class Sandbox(MQTTModule):
         global has_dropped_5
         global has_dropped_all
         global visible_tag
+        visible_tag = None
     # Run autonomous when enabled
     def on_autonomous_enable(self, payload: AvrAutonomousEnablePayload):
         did_message_recieve = payload["enabled"]
