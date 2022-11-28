@@ -14,7 +14,7 @@ from loguru import logger
 import time
 from threading import Thread
 
-class AprilSensor(Thread):
+class AprilSensor(MQTTModule, Thread):
 
     def __init__(self):
         super().__init__()
