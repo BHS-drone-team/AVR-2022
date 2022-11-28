@@ -151,14 +151,8 @@ class Sandbox(MQTTModule):
             has_dropped_5 = False
         if reset == True and reset_button == 1:
             self.open_servo(5)
-            self.open_servo(6)
-            self.open_servo(7)
-            self.open_servo(8)
         if reset == False and reset_button == 1:
             self.close_servo(5)
-            self.close_servo(6)
-            self.close_servo(7)
-            self.close_servo(8)
 
 
     # Update class variable visible_tag to the most currently seen tag and log the horizontal distance between the vehicle and april tag
