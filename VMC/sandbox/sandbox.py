@@ -30,14 +30,15 @@ class Sandbox(MQTTModule):
 
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
         tag_list = payload["tags"] #this is to get the list out of the payload
-        horiz_dist = tag_list[0]["horizontal_dist"]
+        x_dist = tag_list[0]["pos_rel"]["x"]
+        y_dist = tag_list[0]["pos_rel"]["y"]
         tag_id = tag_list[0]["id"]
         logger.debug(f"tag is being sensed: {tag_id}")
-        HORIZ_DROP_TOLERANCE = 10000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+        X_DROP_TOLERANCE = -3 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+        Y_DROP_TOLERANCE = -10
     #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
-        if horiz_dist < HORIZ_DROP_TOLERANCE:
-            visible_tag = tag_id
-            if visible_tag == 0 and self.has_dropped_0 == False:
+        if x_dist < X_DROP_TOLERANCE and y_dist < Y_DROP_TOLERANCE:
+            if tag_id == 0 and self.has_dropped_0 == False:
                 self.has_dropped_0 = True
                 start = time.time ()
                 finish_1 = start + 1
@@ -51,7 +52,7 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.close_servo(0)
-            if visible_tag == 1 and self.has_dropped_1 == False:
+            if tag_id == 1 and self.has_dropped_1 == False:
                 self.has_dropped_1 = True
                 start = time.time ()
                 finish_1 = start + 1
@@ -65,7 +66,7 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.open_servo(1)
-            if visible_tag == 2 and self.has_dropped_2 == False:
+            if tag_id == 2 and self.has_dropped_2 == False:
                 self.has_dropped_2 = True
                 start = time.time ()
                 finish_1 = start + 1
@@ -79,7 +80,7 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.close_servo(0)
-            if visible_tag == 3 and self.has_dropped_3 == False:
+            if tag_id == 3 and self.has_dropped_3 == False:
                 self.has_dropped_3 = True
                 start = time.time ()
                 finish_1 = start + 1
@@ -93,7 +94,7 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.open_servo(1)
-            if visible_tag == 4 and self.has_dropped_4 == False:
+            if tag_id == 4 and self.has_dropped_4 == False:
                 self.has_dropped_4 = True
                 start = time.time ()
                 finish_1 = start + 1
@@ -107,7 +108,7 @@ class Sandbox(MQTTModule):
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
                 self.close_servo(0)
-            if visible_tag == 5 and self.has_dropped_5 == False:
+            if tag_id == 5 and self.has_dropped_5 == False:
                 self.has_dropped_5 = True
                 start = time.time ()
                 finish_1 = start + 1
