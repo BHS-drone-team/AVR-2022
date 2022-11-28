@@ -221,8 +221,8 @@ def main():
     aprilsensor = AprilSensor()
     x = Thread(target = AprilSensor)
     x.start()
+    logger.debug("should have run x.start()")
 
 if __name__ == "__main__":
     main()
-    y = Thread(target = AprilSensor)
-    y.run()
+    logger.debug("running main")
