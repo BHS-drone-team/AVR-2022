@@ -19,8 +19,7 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag} 
-        #"avr/autonomous/building/drop" : self.reset_switch}
+        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.reset_switch}
         self.has_dropped_0 = False
         self.has_dropped_1 = False
         self.has_dropped_2 = False
@@ -129,26 +128,16 @@ class Sandbox(MQTTModule):
 
 
 
-#    def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
-#        reset = payload["enabled"]
-#        reset_button = payload["id"]
-#        global has_dropped_0
-#        global has_dropped_1
-#        global has_dropped_2
-#        global has_dropped_3
-#        global has_dropped_4
-#        global has_dropped_5
-#        if reset == True and reset_button == 0:
-#            has_dropped_0 = False
-#            has_dropped_1 = False
-#            has_dropped_2 = False
-#            has_dropped_3 = False
-#            has_dropped_4 = False
-#            has_dropped_5 = False
-#        if reset == True and reset_button == 1:
-#            self.open_servo(5)
-#        if reset == False and reset_button == 1:
-#            self.close_servo(5)
+    def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
+        reset = payload["enabled"]
+        reset_button = payload["id"]
+        if reset == True and reset_button == 0:
+            self.has_dropped_0 = False
+            self.has_dropped_1 = False
+            self.has_dropped_2 = False
+            self.has_dropped_3 = False
+            self.has_dropped_4 = False
+            self.has_dropped_5 = False
 
 
 
