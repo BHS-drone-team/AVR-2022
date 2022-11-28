@@ -43,15 +43,15 @@ class Sandbox(MQTTModule):
         did_message_recieve = payload["enabled"]
         logger.debug(f"visible tag: {visible_tag}")
         logger.debug(f"recieved auton enable: {did_message_recieve}")
-        global has_dropped_0
-        global has_dropped_1
-        global has_dropped_2
-        global has_dropped_3
-        global has_dropped_4
-        global has_dropped_5
         global has_dropped_all
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         while has_dropped_all == False:
+            global has_dropped_0
+            global has_dropped_1
+            global has_dropped_2
+            global has_dropped_3
+            global has_dropped_4
+            global has_dropped_5
             loop_running = True
             logger.debug(f"loop running: {loop_running}")
             logger.debug(f"visible tag in loop: {visible_tag}")
@@ -152,7 +152,6 @@ class Sandbox(MQTTModule):
             if has_dropped_0 == True and has_dropped_1 == True and has_dropped_2 == True and has_dropped_3 == True and has_dropped_4 == True and has_dropped_5 == True:
                 logger.debug("ending loop")
                 has_dropped_all = True
-                break
 
     def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
         reset = payload["enabled"]
