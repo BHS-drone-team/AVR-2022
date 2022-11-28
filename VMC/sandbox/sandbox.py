@@ -43,6 +43,13 @@ class Sandbox(MQTTModule):
         did_message_recieve = payload["enabled"]
         logger.debug(f"visible tag: {visible_tag}")
         logger.debug(f"recieved auton enable: {did_message_recieve}")
+        global has_dropped_0
+        global has_dropped_1
+        global has_dropped_2
+        global has_dropped_3
+        global has_dropped_4
+        global has_dropped_5
+        global has_dropped_all
         # Check if there is a visible april tag, if the vehicle is within specified horizontal tolerance, and if the vehicle has not already dropped the water
         while has_dropped_all == False:
             loop_running = True
@@ -149,6 +156,12 @@ class Sandbox(MQTTModule):
     def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
         reset = payload["enabled"]
         reset_button = payload["id"]
+        global has_dropped_0
+        global has_dropped_1
+        global has_dropped_2
+        global has_dropped_3
+        global has_dropped_4
+        global has_dropped_5
         if reset == True and reset_button == 0:
             has_dropped_0 = False
             has_dropped_1 = False
@@ -168,6 +181,7 @@ class Sandbox(MQTTModule):
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
         logger.debug(f"visible tag out in update_visible_tag: {tag_id}")
+        global visible_tag
         HORIZ_DROP_TOLERANCE = 10000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
 #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if horiz_dist < HORIZ_DROP_TOLERANCE:
