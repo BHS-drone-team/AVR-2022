@@ -23,12 +23,19 @@ class Sandbox(MQTTModule):
 #        self.topic_map = {"avr/apriltags/visible": self.on_autonomous_enable}
 #        self.visible_map = {"avr/apriltags/visible" : self.update_visible_tag} # On seeing an april tag, run update_visible_tag
         global has_dropped_0
+        has_dropped_0 = False
         global has_dropped_1
+        has_dropped_1 = False
         global has_dropped_2
+        has_dropped_2 = False
         global has_dropped_3
+        has_dropped_3 = False
         global has_dropped_4
+        has_dropped_4 = False
         global has_dropped_5
+        has_dropped_5 = False
         global has_dropped_all
+        has_dropped_all = False
         global visible_tag
         visible_tag = None
     # Run autonomous when enabled
