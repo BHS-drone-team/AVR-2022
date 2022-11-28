@@ -14,7 +14,7 @@ from loguru import logger
 import time
 from threading import Thread
 
-class AprilSensor(MQTTModule, Thread):
+class AprilSensor(Thread):
 
     def __init__(self):
         super().__init__()
@@ -218,7 +218,7 @@ class Sandbox(MQTTModule):
             )
 
 if __name__ == "__main__":
-    x = Thread(target = Sandbox)
+    x = AprilSensor()
     x.start()
     y = Thread(target = AprilSensor)
     y.run()
