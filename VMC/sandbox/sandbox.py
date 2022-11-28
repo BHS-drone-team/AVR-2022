@@ -21,7 +21,7 @@ class AprilSensor(Thread):
 
         self.topic_map = {"avr/apriltags/visible": self.update_visible_tag}
 
-    def update_visible_tag(self):
+    def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
         tag_list = payload["tags"] #this is to get the list out of the payload
         horiz_dist = tag_list[0]["horizontal_dist"]
         tag_id = tag_list[0]["id"]
@@ -220,5 +220,5 @@ class Sandbox(MQTTModule):
 if __name__ == "__main__":
     x = Thread(target = Sandbox)
     x.start()
-    y = Thread(target = AprilSensor, args=(1,))
+    y = Thread(target = AprilSensor)
     y.run()
