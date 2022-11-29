@@ -140,9 +140,9 @@ class Sandbox(MQTTModule):
             self.has_dropped_4 = False
             self.has_dropped_5 = False
         if reset == True and reset_button == 1:
-            self.open_servo_angle(4, 250)
+            self.open_servo(4)
         if reset == False and reset_button == 1:
-            self.close_servo_angle(4, 125)
+            self.close_servo(4)
 
 
 
