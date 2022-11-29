@@ -139,7 +139,10 @@ class Sandbox(MQTTModule):
             self.has_dropped_3 = False
             self.has_dropped_4 = False
             self.has_dropped_5 = False
-
+        if reset == True and reset_button == 1:
+            self.open_servo_angle(4, 250)
+        if reset == False and reset_button == 1:
+            self.close_servo_angle(4, 125)
 
 
 
@@ -150,12 +153,24 @@ class Sandbox(MQTTModule):
                     {"servo": channel, "action": "open"}
             )
 
+    def open_servo_angle(self, channel, position):
+        self.send_message(
+                    "avr/pcm/set_servo_abs",
+                    {"servo": channel, "absolute": position}
+            )
+
+
     def close_servo(self, channel):
         self.send_message(
                     "avr/pcm/set_servo_open_close",
                     {"servo": channel, "action": "close"}
             )
 
+    def close_servo_angle(self, channel, position):
+        self.send_message(
+                    "avr/pcm/set_servo_abs",
+                    {"servo": channel, "absolute": position}
+            )
     # Blink led for desired iterations with desired wrbg value for specified time interval
     def blink_leds(self, time):
         wrgb = (0,0,51,255)
