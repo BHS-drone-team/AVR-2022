@@ -143,8 +143,8 @@ class Sandbox(MQTTModule):
             self.close_servo_percent(4, 0)
             self.open_servo_percent(5, 0)
         if reset == False and reset_button == 1:
-            self.open_servo_percent(4, 100)
-            self.close_servo_percent(5, 100)
+            self.open_servo_percent(4, 200)
+            self.close_servo_percent(5, 200)
         if reset == True and reset_button == 4:
             self.open_servo(4)
             self.open_servo(5)
