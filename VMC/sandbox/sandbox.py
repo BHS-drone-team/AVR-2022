@@ -65,7 +65,7 @@ class Sandbox(MQTTModule):
                 while time.time () < finish_2:
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.open_servo(1)
+                self.open_servo(0)
             if tag_id == 2 and self.has_dropped_2 == False:
                 self.has_dropped_2 = True
                 start = time.time ()
@@ -93,7 +93,7 @@ class Sandbox(MQTTModule):
                 while time.time () < finish_2:
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.open_servo(1)
+                self.open_servo(0)
             if tag_id == 4 and self.has_dropped_4 == False:
                 self.has_dropped_4 = True
                 start = time.time ()
@@ -121,7 +121,7 @@ class Sandbox(MQTTModule):
                 while time.time () < finish_2:
                     pass
                 self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.open_servo(1)
+                self.open_servo(0)
 
 
 
