@@ -34,8 +34,8 @@ class Sandbox(MQTTModule):
         y_dist = tag_list[0]["pos_rel"]["y"]
         tag_id = tag_list[0]["id"]
         logger.debug(f"tag is being sensed: {tag_id}")
-        X_DROP_TOLERANCE = -3 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
-        Y_DROP_TOLERANCE = -10
+        X_DROP_TOLERANCE = 100000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+        Y_DROP_TOLERANCE = 100000000
     #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if x_dist < X_DROP_TOLERANCE and y_dist < Y_DROP_TOLERANCE:
             if tag_id == 0 and self.has_dropped_0 == False:
