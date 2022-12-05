@@ -19,13 +19,14 @@ class Sandbox(MQTTModule):
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.reset_switch}
+        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.extra_uses, "avr/autonomous/enable" : self.enable_auton}
         self.has_dropped_0 = False
         self.has_dropped_1 = False
         self.has_dropped_2 = False
         self.has_dropped_3 = False
         self.has_dropped_4 = False
         self.has_dropped_5 = False
+        self.auton_enabled = False
 
 
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
@@ -37,108 +38,122 @@ class Sandbox(MQTTModule):
         X_DROP_TOLERANCE = 100000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
         Y_DROP_TOLERANCE = 100000000
     #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
-        if x_dist < X_DROP_TOLERANCE and y_dist < Y_DROP_TOLERANCE:
+        if x_dist < X_DROP_TOLERANCE and y_dist < Y_DROP_TOLERANCE and self.auton_enabled == True:
             if tag_id == 0 and self.has_dropped_0 == False:
-                self.has_dropped_0 = True
-                start = time.time ()
-                finish_1 = start + 1
-                finish_2 = start + 2
-                self.open_servo(0) # Open servo on channel 0
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_1:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_2:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.close_servo(0)
+                self.drop_building_5()
             if tag_id == 1 and self.has_dropped_1 == False:
-                self.has_dropped_1 = True
-                start = time.time ()
-                finish_1 = start + 1
-                finish_2 = start + 2
-                self.close_servo(1) # Open servo on channel 0
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_1:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_2:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.open_servo(0)
+                self.drop_building_5()
             if tag_id == 2 and self.has_dropped_2 == False:
-                self.has_dropped_2 = True
-                start = time.time ()
-                finish_1 = start + 1
-                finish_2 = start + 2
-                self.open_servo(0) # Open servo on channel 0
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_1:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_2:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.close_servo(0)
+                self.drop_building_5()
             if tag_id == 3 and self.has_dropped_3 == False:
-                self.has_dropped_3 = True
-                start = time.time ()
-                finish_1 = start + 1
-                finish_2 = start + 2
-                self.close_servo(1) # Open servo on channel 0
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_1:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_2:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.open_servo(0)
+                self.drop_building_5()
             if tag_id == 4 and self.has_dropped_4 == False:
-                self.has_dropped_4 = True
-                start = time.time ()
-                finish_1 = start + 1
-                finish_2 = start + 2
-                self.open_servo(0) # Open servo on channel 0
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_1:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_2:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.close_servo(0)
+                self.drop_building_5()
             if tag_id == 5 and self.has_dropped_5 == False:
-                self.has_dropped_5 = True
-                start = time.time ()
-                finish_1 = start + 1
-                finish_2 = start + 2
-                self.close_servo(1) # Open servo on channel 0
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_1:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                while time.time () < finish_2:
-                    pass
-                self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-                self.open_servo(0)
+                self.drop_building_5()
 
 
 
+    def drop_building_1(self):
+        self.has_dropped_1 = True
+        start = time.time ()
+        finish_1 = start + 2
+        finish_2 = start + 3
+        finish_3 = start + 4
+        while time.time () < finish_1:
+            pass
+        self.open_servo(0) # Open servo on channel 0
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_2:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_3:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        self.close_servo(0)
+
+    def drop_building_2(self):
+        self.has_dropped_2 = True
+        start = time.time ()
+        finish_1 = start + 2
+        finish_2 = start + 3
+        finish_3 = start + 4
+        while time.time () < finish_1:
+            pass
+        self.open_servo(0) # Open servo on channel 0
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_2:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_3:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        self.close_servo(0)
+
+    def drop_building_3(self):
+        self.has_dropped_3 = True
+        start = time.time ()
+        finish_1 = start + 2
+        finish_2 = start + 3
+        finish_3 = start + 4
+        while time.time () < finish_1:
+            pass
+        self.open_servo(0) # Open servo on channel 0
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_2:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_3:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        self.close_servo(0)
+
+    def drop_building_4(self):
+        self.has_dropped_4 = True
+        start = time.time ()
+        finish_1 = start + 2
+        finish_2 = start + 3
+        finish_3 = start + 4
+        while time.time () < finish_1:
+            pass
+        self.open_servo(0) # Open servo on channel 0
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_2:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_3:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        self.close_servo(0)
+
+    def drop_building_5(self):
+        self.has_dropped_5 = True
+        start = time.time ()
+        finish_1 = start + 2
+        finish_2 = start + 3
+        finish_3 = start + 4
+        while time.time () < finish_1:
+            pass
+        self.open_servo(0) # Open servo on channel 0
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_2:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        while time.time () < finish_3:
+            pass
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        self.close_servo(0)
+
+    def enable_auton(self, payload: AvrAutonomousEnablePayload):
+        enable_switch = payload["enabled"]
+        self.auton_enabled = enable_switch
 
 
-
-
-    def reset_switch(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
+    def extra_uses(self, payload: AvrAutonomousBuildingDropPayload):#resets the drop so it can drop more than once per tag
         reset = payload["enabled"]
         reset_button = payload["id"]
         if reset == True and reset_button == 0:
-            self.has_dropped_0 = False
-            self.has_dropped_1 = False
-            self.has_dropped_2 = False
-            self.has_dropped_3 = False
-            self.has_dropped_4 = False
-            self.has_dropped_5 = False
+            self.resetting_has_dropped
         if reset == True and reset_button == 1:
             self.open_servo(4)
             self.close_servo(5)
@@ -152,7 +167,13 @@ class Sandbox(MQTTModule):
             self.close_servo(4)
             self.close_servo(5)
 
-
+    def resetting_has_dropped(self):
+        self.has_dropped_0 = False
+        self.has_dropped_1 = False
+        self.has_dropped_2 = False
+        self.has_dropped_3 = False
+        self.has_dropped_4 = False
+        self.has_dropped_5 = False
 
     # Open servo on desired channel
     def open_servo(self, channel):
@@ -166,7 +187,6 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_servo_pct",
                     {"servo": channel, "percent": percent}
             )
-
 
     def close_servo(self, channel):
         self.send_message(
