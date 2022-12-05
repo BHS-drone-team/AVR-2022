@@ -20,7 +20,7 @@ class VMCControlWidget(BaseTabWidget):
     def __init__(self, parent: QtWidgets.QWidget) -> None:
         super().__init__(parent)
 
-        self.setWindowTitle("VMC Control")
+        self.setWindowTitle("VMC Control modified")
 
     def build(self) -> None:
         """
@@ -35,7 +35,7 @@ class VMCControlWidget(BaseTabWidget):
         led_layout = QtWidgets.QVBoxLayout()
         led_groupbox.setLayout(led_layout)
 
-        red_led_button = QtWidgets.QPushButton("Red")
+        red_led_button = QtWidgets.QPushButton("Red cool")
         red_led_button.setStyleSheet("background-color: red")
         red_led_button.clicked.connect(lambda: self.set_led((255, 255, 0, 0)))  # type: ignore
         led_layout.addWidget(red_led_button)
