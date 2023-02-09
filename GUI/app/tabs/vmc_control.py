@@ -59,7 +59,7 @@ class VMCControlWidget(BaseTabWidget):
 
         # ==========================
         # Servos
-        self.number_of_servos = 4
+        self.number_of_servos = 6
         self.servo_labels: List[QtWidgets.QLabel] = []
 
         servos_groupbox = QtWidgets.QGroupBox("Servos")
