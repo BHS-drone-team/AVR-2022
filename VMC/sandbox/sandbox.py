@@ -132,16 +132,16 @@ class Sandbox(MQTTModule):
         finish_1 = start + 2
         finish_2 = start + 3
         finish_3 = start + 4
+        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
         while time.time () < finish_1:
             pass
-        self.open_servo(0) # Open servo on channel 0
         self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
         while time.time () < finish_2:
             pass
         self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
+        self.open_servo(0) # Open servo on channel 0
         while time.time () < finish_3:
             pass
-        self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
         self.close_servo(0)
 
     def enable_auton(self, payload: AvrAutonomousEnablePayload):
