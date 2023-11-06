@@ -13,6 +13,8 @@ from bell.avr.mqtt.payloads import (
 from loguru import logger
 import time
 
+bucketServo = int(2)
+
 class Sandbox(MQTTModule):
 
     # NOTE needs logic to handle multiple drops per auto
@@ -144,7 +146,7 @@ class Sandbox(MQTTModule):
             pass
         self.close_servo(0)
 
-    def enable_auton(self, payload: AvrAutonomousEnablePayload):
+    def enable_auton(self, paybbhload: AvrAutonomousEnablePayload):
         enable_switch = payload["enabled"]
         self.auton_enabled = enable_switch
 
@@ -155,11 +157,9 @@ class Sandbox(MQTTModule):
         if reset == True and reset_button == 0:
             self.resetting_has_dropped
         if reset == True and reset_button == 1:
-            self.open_servo(4)
-            self.close_servo(5)
+            self.open_servo(2)
         if reset == False and reset_button == 1:
-            self.open_servo_percent(4, 99)
-            self.close_servo_percent(5, 5)
+            self.open_servo_percent(2, 99)
         if reset == True and reset_button == 4:
             self.open_servo_percent(0, 95)
         if reset == False and reset_button == 4:
