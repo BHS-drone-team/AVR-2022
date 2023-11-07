@@ -13,15 +13,15 @@ from bell.avr.mqtt.payloads import (
 from loguru import logger
 import time
 
-bucketServo = int(2)
-
 class Sandbox(MQTTModule):
+
+    autonServo = int(2)
 
     # NOTE needs logic to handle multiple drops per auto
     def __init__(self):
         super().__init__()
 
-        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.extra_uses, "avr/autonomous/enable" : self.enable_auton}
+        self.topic_map = {"avr/apriltags/visible" : self.update_visible_tag, "avr/autonomous/building/drop" : self.extra_uses, "avr/autonomous/enable" : self.enable_auton, "/avr/fcm/actions" : self.auton_recon, "avr/fcm/capture_home" self.home}
         self.has_dropped_0 = False
         self.has_dropped_1 = False
         self.has_dropped_2 = False
@@ -30,6 +30,8 @@ class Sandbox(MQTTModule):
         self.has_dropped_5 = False
         self.auton_enabled = False
 
+    def home(self):
+        
 
     def update_visible_tag(self, payload: AvrApriltagsVisiblePayload):
         tag_list = payload["tags"] #this is to get the list out of the payload
@@ -37,8 +39,8 @@ class Sandbox(MQTTModule):
         y_dist = tag_list[0]["pos_rel"]["y"]
         tag_id = tag_list[0]["id"]
         logger.debug(f"tag is being sensed: {tag_id}")
-        X_DROP_TOLERANCE = 100000000 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
-        Y_DROP_TOLERANCE = 100000000
+        X_DROP_TOLERANCE = 100 # Tolerance for dropping water autonomously in cm NOTE needs to be tuned
+        Y_DROP_TOLERANCE = 100
     #        logger.debug(f"Horizontal distance: {horiz_dist} cm") # NOTE need to check which logger method to use
         if x_dist < X_DROP_TOLERANCE and y_dist < Y_DROP_TOLERANCE and self.auton_enabled == True:
             if tag_id == 0 and self.has_dropped_0 == False:
@@ -69,10 +71,10 @@ class Sandbox(MQTTModule):
         while time.time () < finish_3:
             pass
         self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-        self.open_servo(0) # Open servo on channel 0
+        self.open_servo(self.autonServo) # Open servo on channel 0
         while time.time () < finish_1:
             pass
-        self.close_servo(0)
+        self.close_servo(self.autonServo)
 
     def drop_building_2(self):
         self.has_dropped_2 = True
@@ -90,7 +92,7 @@ class Sandbox(MQTTModule):
         while time.time () < finish_3:
             pass
         self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-        self.close_servo(0)
+        self.close_servo(self.autonServo)
 
     def drop_building_3(self):
         self.has_dropped_3 = True
@@ -108,7 +110,7 @@ class Sandbox(MQTTModule):
         while time.time () < finish_3:
             pass
         self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-        self.close_servo(0)
+        self.close_servo(self.autonServo)
 
     def drop_building_4(self):
         self.has_dropped_4 = True
@@ -126,7 +128,7 @@ class Sandbox(MQTTModule):
         while time.time () < finish_3:
             pass
         self.blink_leds(0.5) # Blink LEDs 1 times at 0.5 second interval
-        self.close_servo(0)
+        self.close_servo(self.autonServo)
 
     def drop_building_5(self):
         self.has_dropped_5 = True
@@ -144,7 +146,7 @@ class Sandbox(MQTTModule):
         self.open_servo(0) # Open servo on channel 0
         while time.time () < finish_3:
             pass
-        self.close_servo(0)
+        self.close_servo(self.autonServo)
 
     def enable_auton(self, payload: AvrAutonomousEnablePayload):
         enable_switch = payload["enabled"]
@@ -204,6 +206,98 @@ class Sandbox(MQTTModule):
                     "avr/pcm/set_temp_color",
                     {"wrgb": wrgb, "time": time}
             )
+        
+    def auton_recon_setup(self):
+
+        {
+            "action": "upload_mission",
+            "payload": {
+                "waypoints": [
+                {
+                    "type": "takeoff",
+                    "n": 5.6896,
+                    "e": 0,
+                    "d": -3.3528,
+                    "heading": 0
+                },
+                {
+                    "type": "goto",
+                    "n": 0,
+                    "e": -1.905,
+                    "d": 0,
+                    "heading": 270,
+                },
+                {
+                    "type": "land",
+                    "n": -5.6896,
+                    "e": -1.905,
+                    "d": 3.3528,
+                    "heading": 0
+                }
+                ]
+            }
+        }
+
+    def auton_recon_start(self):
+        {
+            "action": "start_mission",
+            "payload": {}
+        }
+        self.update_visible_tag()
+
+
+    def auton_recon(self):
+        self.send_message(
+                "avr/fcm/capture_home",
+                {}
+            )
+        self.send_message(
+            "/avr/fcm/actions"
+            {
+                "action": "arm",
+                "payload": {}
+            }
+        )
+        self.send_message (
+
+        )
+            {
+                "action": "goto_location_ned",
+                "payload": {
+                    "n": 5.6896,
+                    "e": 0,
+                    "d": -3.3528,
+                    "heading": 0
+                }
+            },
+            {
+                "action": "goto_location_ned",
+                "payload": {
+                    "n": 0,
+                    "e": -1.905,
+                    "d": 0,
+                    "heading": 0,
+                }
+            }
+
+        self.update_visible_tag()
+
+        {
+            "action": "goto_location_ned",
+            "payload": {
+                "n": -5.6896,
+                "e": -1.905,
+                "d": 3.3528,
+                "heading": 0
+            }
+        }
+        {
+            "action": "land",
+            "payload": {}
+        }
+
+    
+
 
 if __name__ == "__main__":
     box = Sandbox()
