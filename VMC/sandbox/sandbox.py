@@ -146,7 +146,7 @@ class Sandbox(MQTTModule):
             pass
         self.close_servo(0)
 
-    def enable_auton(self, paybbhload: AvrAutonomousEnablePayload):
+    def enable_auton(self, payload: AvrAutonomousEnablePayload):
         enable_switch = payload["enabled"]
         self.auton_enabled = enable_switch
 
